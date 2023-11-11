@@ -1,4 +1,4 @@
-#include "header_gen.h"
+#include "header_general.h"
 
 int main() {
     printf("Hello, World!\n");
