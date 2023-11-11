@@ -5,9 +5,9 @@ set(CMAKE_C_STANDARD 23)
 
 add_executable(2023S2_ECELECAR
         main.c
-        header.h
+        header_gen.h
 
         TEMPLATE/main.c
-        TEMPLATE/header.h
+        TEMPLATE/header_gen.h
 )
 
