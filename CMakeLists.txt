@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.26)
+cmake_minimum_required(VERSION 3.24)
 project(2023S2_ECELECAR C)
 
 set(CMAKE_C_STANDARD 23)
