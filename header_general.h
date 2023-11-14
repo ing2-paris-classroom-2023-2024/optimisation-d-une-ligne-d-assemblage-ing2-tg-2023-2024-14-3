@@ -38,7 +38,9 @@ typedef struct DATAS {
 // **********  PROTOS   **********
 
 // Protos de Chargement de Données
-DATAS SCANDATA(char* jeu_donnees);
+void SCANDATA(DATAS*datas,char* jeu_donnees);
+void test_SCANDATA(DATAS* inst);
+void nom_fichiers(char* chemin,char* jeu_donnees,int num);
 
 
 

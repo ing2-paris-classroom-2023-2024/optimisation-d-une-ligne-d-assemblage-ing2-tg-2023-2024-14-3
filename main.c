@@ -3,9 +3,8 @@
 int main() {
     setbuf(stdout, 0);
     char* jeu_donnees = "01";
-    DATAS datas = SCANDATA(jeu_donnees);
-    for(int i = 0; i < datas.EXCLUSION_TOT; i++){
-
-    }
+    DATAS datas;
+    SCANDATA(&datas,jeu_donnees);
+    test_SCANDATA(&datas);
     return 0;
 }
