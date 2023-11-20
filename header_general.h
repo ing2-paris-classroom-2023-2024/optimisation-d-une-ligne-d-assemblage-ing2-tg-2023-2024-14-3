@@ -32,6 +32,7 @@ typedef struct DATAS {
 
 // Protos de Chargement de Données
 DATAS SCANDATAS(char* jeu_donnees);
+int** FILLDATAS(char* fname, int* tot, int cond);
 
 
 
