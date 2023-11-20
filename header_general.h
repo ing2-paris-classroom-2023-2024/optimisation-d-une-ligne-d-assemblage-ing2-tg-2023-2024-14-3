@@ -16,21 +16,14 @@
 // ********** STRUCTURE **********
 
 
-// Structures de Chargement de Données
-typedef struct DATA {
-    int type;         // Type de donnée (0 : INT, 1 : FLOAT)
-    int nb;           //
-    int i;            // Données de type INT (0)
-    float f;          // Données de type FLOAT (1)
-} DATA;
 typedef struct DATAS {
     int TCYCLE;         // Temps de Cycle
-    DATA* EXCLUSION;    // Données d'exclusion
-    int EXCLUSION_TOT;  // Nombre total d'exclusion
-    DATA* PRECEDENCE;   // Données de précédence
-    int PRECEDENCE_TOT; // Nombre total de precedence
-    DATA* OPERATION ;   // Données d'opération
-    int OPERATION_TOT;  // Nombre total d'operation
+    int** EXCLUSIONS;    // Données d'exclusion
+    int EXCLUSIONS_TOT;  // Nombre total d'exclusion
+    int** PRECEDENCES;   // Données de précédence
+    int PRECEDENCES_TOT; // Nombre total de precedence
+    int** OPERATIONS ;   // Données d'opération
+    int OPERATIONS_TOT;  // Nombre total d'operation
 } DATAS;
 
 
@@ -38,9 +31,7 @@ typedef struct DATAS {
 // **********  PROTOS   **********
 
 // Protos de Chargement de Données
-void SCANDATA(DATAS*datas,char* jeu_donnees);
-void test_SCANDATA(DATAS* inst);
-void nom_fichiers(char* chemin,char* jeu_donnees,int num);
+DATAS SCANDATAS(char* jeu_donnees);
 
 
 

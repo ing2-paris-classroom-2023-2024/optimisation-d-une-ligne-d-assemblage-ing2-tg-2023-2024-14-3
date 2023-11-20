@@ -1,6 +1,6 @@
 #include "header_general.h"
 
-DATAS SCANDATA(char* jeu_donnees){
+DATAS SCANDATAS(char* jeu_donnees){
     //      -- FONCTION DE CHARGEMENT DES DONNEES
     //      JEU_DONNEES : Numéro du jeu de données
     //      || RETURN :     Structure de valeurs
@@ -10,44 +10,51 @@ DATAS SCANDATA(char* jeu_donnees){
 
     strcpy(temp, "../fichiers_ressources/"); strcat(temp, jeu_donnees); strcat(temp, "/"); strcat(temp, "exclusions"); strcat(temp, ".txt");
     fichier = fopen(temp, "rw+");
-    count = 0;
-    datas.EXCLUSION = (DATA*) malloc( sizeof(DATA) );
+    datas.EXCLUSIONS_TOT = 0;
+    datas.EXCLUSIONS = (int**) malloc( sizeof(int*) );
     while(!feof(fichier)){
-        datas.EXCLUSION = (DATA*) realloc( datas.EXCLUSION, (count+1)*sizeof(DATA) );
-        fscanf(fichier, "%d %d\n", &(datas.EXCLUSION[count].nb), &(datas.EXCLUSION[count].i));
-        count++;
+        datas.EXCLUSIONS = (int**) realloc( datas.EXCLUSIONS, (datas.EXCLUSIONS_TOT+1)*sizeof(int*) );
+        datas.EXCLUSIONS[datas.EXCLUSIONS_TOT] = (int*) malloc( 2*sizeof(int) );
+        fscanf(fichier, "%d %d\n", &(datas.EXCLUSIONS[datas.EXCLUSIONS_TOT][0]), &(datas.EXCLUSIONS[datas.EXCLUSIONS_TOT][1]));
+        datas.EXCLUSIONS_TOT++;
     }
-    datas.EXCLUSION_TOT = count;
     fclose(fichier);
 
-    strcpy(temp, "../fichiers_ressources/"); strcat(temp, jeu_donnees); strcat(temp, "/"); strcat(temp, "precedences"); strcat(temp, ".txt");
     fichier = fopen(temp, "rw+");
-    count = 0;
-    datas.PRECEDENCE = (DATA*) malloc( sizeof(DATA) );
+    datas.PRECEDENCES_TOT = 0;
+    datas.PRECEDENCES = (int**) malloc( sizeof(int*) );
     while(!feof(fichier)){
-        datas.PRECEDENCE = (DATA*) realloc( datas.PRECEDENCE, (count+1)*sizeof(DATA) );
-        fscanf(fichier, "%d %d\n", &(datas.PRECEDENCE[count].nb), &(datas.PRECEDENCE[count].i));
-        count++;
+        datas.PRECEDENCES = (int**) realloc( datas.PRECEDENCES, (datas.PRECEDENCES_TOT+1)*sizeof(int*) );
+        datas.PRECEDENCES[datas.PRECEDENCES_TOT] = (int*) malloc( 2*sizeof(int) );
+        fscanf(fichier, "%d %d\n", &(datas.PRECEDENCES[datas.PRECEDENCES_TOT][0]), &(datas.PRECEDENCES[datas.PRECEDENCES_TOT][1]));
+        printf("TEST : %d %d\n", datas.PRECEDENCES[datas.PRECEDENCES_TOT][0], datas.PRECEDENCES[datas.PRECEDENCES_TOT][1]);
+        datas.PRECEDENCES_TOT++;
     }
-    datas.PRECEDENCE_TOT = count;
     fclose(fichier);
 
     strcpy(temp, "../fichiers_ressources/"); strcat(temp, jeu_donnees); strcat(temp, "/"); strcat(temp, "operations"); strcat(temp, ".txt");
-    fichier = fopen(temp, "rw+");
-    count = 0;
-    datas.OPERATION = (DATA*) malloc( sizeof(DATA) );
+    datas.OPERATIONS_TOT = 0;
+    datas.OPERATIONS = (int**) malloc( sizeof(int*) );
     while(!feof(fichier)){
-        datas.OPERATION = (DATA*) realloc( datas.OPERATION, (count+1)*sizeof(DATA) );
-        fscanf(fichier, "%d %f\n", &(datas.OPERATION[count].nb), &(datas.OPERATION[count].f));
-        count++;
+        datas.OPERATIONS = (int**) realloc( datas.OPERATIONS, (datas.OPERATIONS_TOT+1)*sizeof(int*) );
+        datas.OPERATIONS[datas.OPERATIONS_TOT] = (int*) malloc( 2*sizeof(int) );
+        float temp = 0.0;
+        fscanf(fichier, "%d %f\n", &(datas.OPERATIONS[datas.OPERATIONS_TOT][0]), &(temp));
+        datas.OPERATIONS[datas.OPERATIONS_TOT][1] = (int)(temp*1000);
+        datas.OPERATIONS_TOT++;
     }
-    datas.OPERATION_TOT = count;
     fclose(fichier);
 
     strcpy(temp, "../fichiers_ressources/"); strcat(temp, jeu_donnees); strcat(temp, "/"); strcat(temp, "temps_cycle"); strcat(temp, ".txt");
     fichier = fopen(temp, "rw+");
     fscanf(fichier, "%d", &(datas.TCYCLE));
+    datas.TCYCLE = (int)(datas.TCYCLE*1000);
     fclose(fichier);
 
     return datas;
 }
+
+int** FILLINDATAS(char* fname, int* tot, int cond){
+
+}
+
