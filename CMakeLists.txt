@@ -5,6 +5,6 @@ set(CMAKE_C_STANDARD 23)
 
 add_executable(2023S1_ECELECAR
         main.c
-        fonctions_globales.c
+        data.c
         header_general.h
         )
