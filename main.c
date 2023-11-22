@@ -7,5 +7,6 @@ int main() {
     //DISPDATAS(datas);
     DATASET dataset = DATASORT(datas);
     DISPDATASET(dataset);
+    FREEDATASET(dataset);
     return 0;
 }

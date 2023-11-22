@@ -51,10 +51,12 @@ typedef struct TASK {
 DATAS SCANDATAS(char* jeu_donnees);
 int** FILLDATAS(char* fname, int* tot, int cond);
 void DISPDATAS(DATAS datas);
+void FREEDATAS(DATAS datas);
 
 // Protos de l'Ordonnancement des Données
 DATASET DATASORT(DATAS datas);
 void DISPDATASET(DATASET dataset);
+void FREEDATASET(DATASET dataset);
 
 
 

@@ -72,6 +72,15 @@ void DISPDATAS(DATAS datas){
     printf("%d\n", datas.TCYCLE);
 }
 
+void FREEDATAS(DATAS datas){
+    for(int i = 0; i < datas.PRECEDENCES_TOT; i++) free(datas.PRECEDENCES[i]);
+    free(datas.PRECEDENCES);
+    for(int i = 0; i < datas.EXCLUSIONS_TOT; i++) free(datas.EXCLUSIONS[i]);
+    free(datas.EXCLUSIONS);
+    for(int i = 0; i < datas.OPERATIONS_TOT; i++) free(datas.OPERATIONS[i]);
+    free(datas.OPERATIONS);
+}
+
 
 
 // Ordonnancement des Données
@@ -138,13 +147,15 @@ DATASET DATASORT(DATAS datas){
         //printf("TACHE %d :\tExclut -> %d \t(ETOT %d)\n", LIGNE[1]->BASEID, LIGNE[1]->E[LIGNE[1]->E_TOT-1]->BASEID, LIGNE[1]->E_TOT);
     }
 
+    FREEDATAS(datas);
+
     return dataset;
 }
 
 void DISPDATASET(DATASET dataset){
     printf("Tâches (TTOT : %d) :\n", dataset.TASK_TOT);
     for(int i = 0; i < dataset.TASK_TOT; i++){
-        printf("\tTache n°%d :\n");
+        printf("\tTache n°%d :\n", dataset.TASKS[i].BASEID);
         printf("\t\tPrécédents (PTOT : %d) : ", dataset.TASKS[i].P_TOT);
         for(int j = 0; j < dataset.TASKS[i].P_TOT; j++){
             printf("%d, ", dataset.TASKS[i].P[j]->BASEID);
@@ -156,6 +167,14 @@ void DISPDATASET(DATASET dataset){
         }
         printf("\n");
     }
+}
+
+void FREEDATASET(DATASET dataset){
+    for(int i = 0; i < dataset.TASK_TOT; i++){
+        free(dataset.TASKS[i].P);
+        free(dataset.TASKS[i].E);
+    }
+    free(dataset.TASKS);
 }
 
 
