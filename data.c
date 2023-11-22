@@ -110,11 +110,13 @@ DATASET DATASORT(DATAS datas){
         for(int j = 0; j < dataset.TASK_TOT; j++){
             if(datas.PRECEDENCES[i][0] == dataset.TASKS[j].BASEID){
                 LIGNE[0] = &(dataset.TASKS[j]);
+                break;
             }
         }
         for(int j = 0; j < dataset.TASK_TOT; j++){
             if(datas.PRECEDENCES[i][1] == dataset.TASKS[j].BASEID){
                 LIGNE[1] = &(dataset.TASKS[j]);
+                break;
             }
         }
 
@@ -176,6 +178,3 @@ void FREEDATASET(DATASET dataset){
     }
     free(dataset.TASKS);
 }
-
-
-

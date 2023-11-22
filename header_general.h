@@ -58,6 +58,8 @@ DATASET DATASORT(DATAS datas);
 void DISPDATASET(DATASET dataset);
 void FREEDATASET(DATASET dataset);
 
+// Algorithme
+void ALGO(DATASET dataset);
 
 
 
