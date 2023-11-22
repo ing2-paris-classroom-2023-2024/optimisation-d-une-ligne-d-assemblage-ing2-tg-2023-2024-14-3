@@ -27,12 +27,35 @@ typedef struct DATAS {
 } DATAS;
 
 
+typedef struct DATASET {
+    int T_CYCLE;
+    int TASK_TOT;
+    struct TASK* TASKS;
+} DATASET;
+typedef struct TASK;
+typedef struct TASK {
+    int BASEID;
+    int POIDS;
+    struct TASK** P;
+    int P_TOT;
+    struct TASK** E;
+    int E_TOT;
+} TASK;
+
+
+
 
 // **********  PROTOS   **********
 
 // Protos de Chargement de Données
 DATAS SCANDATAS(char* jeu_donnees);
 int** FILLDATAS(char* fname, int* tot, int cond);
+void DISPDATAS(DATAS datas);
+
+// Protos de l'Ordonnancement des Données
+DATASET DATASORT(DATAS datas);
+void DISPDATASET(DATASET dataset);
+
 
 
 

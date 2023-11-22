@@ -1,5 +1,8 @@
 #include "header_general.h"
 
+// Chargement de Données
+
+
 DATAS SCANDATAS(char* jeu_donnees){
     //      -- FONCTION DE CHARGEMENT DES DONNEES
     //      JEU_DONNEES : Numéro du jeu de données
@@ -51,4 +54,109 @@ int** FILLDATAS(char* fname, int* tot, int cond){
     printf("\n");
     return tab;
 }
+
+void DISPDATAS(DATAS datas){
+    printf("EXCLUSIONS :\n");
+    for(int i = 0; i < datas.EXCLUSIONS_TOT; i++){
+        printf("%d :\t%d\t%d\n", i, datas.EXCLUSIONS[i][0], datas.EXCLUSIONS[i][1]);
+    }
+    printf("\nPRECEDENCES :\n");
+    for(int i = 0; i < datas.PRECEDENCES_TOT; i++){
+        printf("%d :\t%d\t%d\n", i, datas.PRECEDENCES[i][0], datas.PRECEDENCES[i][1]);
+    }
+    printf("\nOPERATIONS :\n");
+    for(int i = 0; i < datas.OPERATIONS_TOT; i++){
+        printf("%d :\t%d\t%d\n", i, datas.OPERATIONS[i][0], datas.OPERATIONS[i][1]);
+    }
+    printf("\nTCYCLE : \n");
+    printf("%d\n", datas.TCYCLE);
+}
+
+
+
+// Ordonnancement des Données
+
+
+DATASET DATASORT(DATAS datas){
+    DATASET dataset;
+
+    // Remplissage du jeu de données initial
+    dataset.TASK_TOT = 0;
+    dataset.TASKS = (TASK*) malloc( dataset.TASK_TOT*sizeof(TASK) );
+    for(int i = 0; i < datas.OPERATIONS_TOT; i++){
+        dataset.TASKS = (TASK*) realloc(dataset.TASKS, (dataset.TASK_TOT+1)*sizeof(TASK) );
+        dataset.TASKS[dataset.TASK_TOT].BASEID = datas.OPERATIONS[i][0];
+        dataset.TASKS[dataset.TASK_TOT].POIDS = datas.OPERATIONS[i][1];
+        dataset.TASKS[dataset.TASK_TOT].P_TOT = 0;
+        dataset.TASKS[dataset.TASK_TOT].P = (TASK**) malloc( dataset.TASKS[dataset.TASK_TOT].P_TOT*sizeof(TASK*) );
+        dataset.TASKS[dataset.TASK_TOT].E_TOT = 0;
+        dataset.TASKS[dataset.TASK_TOT].E = (TASK**) malloc( dataset.TASKS[dataset.TASK_TOT].E_TOT*sizeof(TASK*) );
+        dataset.TASK_TOT++;
+    }
+    dataset.T_CYCLE = datas.TCYCLE;
+
+    // Ajout des précédents
+    for(int i = 0; i < datas.PRECEDENCES_TOT; i++){
+        TASK* LIGNE[2];
+        for(int j = 0; j < dataset.TASK_TOT; j++){
+            if(datas.PRECEDENCES[i][0] == dataset.TASKS[j].BASEID){
+                LIGNE[0] = &(dataset.TASKS[j]);
+            }
+        }
+        for(int j = 0; j < dataset.TASK_TOT; j++){
+            if(datas.PRECEDENCES[i][1] == dataset.TASKS[j].BASEID){
+                LIGNE[1] = &(dataset.TASKS[j]);
+            }
+        }
+
+        LIGNE[0]->P = (TASK**) realloc(LIGNE[0]->P, (LIGNE[0]->P_TOT+1)*sizeof(TASK*));
+        LIGNE[0]->P[LIGNE[0]->P_TOT] = LIGNE[1];
+        LIGNE[0]->P_TOT++;
+        //printf("TACHE %d :\tAntecedent -> %d \t(PTOT %d)\n", LIGNE[0]->BASEID, LIGNE[0]->P[LIGNE[0]->P_TOT-1]->BASEID, LIGNE[0]->P_TOT);
+    }
+
+    //Ajout des exclusions
+    for(int i = 0; i < datas.EXCLUSIONS_TOT; i++){
+        TASK* LIGNE[2];
+        for(int j = 0; j < dataset.TASK_TOT; j++){
+            if(datas.EXCLUSIONS[i][0] == dataset.TASKS[j].BASEID){
+                LIGNE[0] = &(dataset.TASKS[j]);
+            }
+        }
+        for(int j = 0; j < dataset.TASK_TOT; j++){
+            if(datas.EXCLUSIONS[i][1] == dataset.TASKS[j].BASEID){
+                LIGNE[1] = &(dataset.TASKS[j]);
+            }
+        }
+        LIGNE[0]->E = (TASK**) realloc(LIGNE[0]->E, (LIGNE[0]->E_TOT+1)*sizeof(TASK*));
+        LIGNE[0]->E[LIGNE[0]->E_TOT] = LIGNE[1];
+        LIGNE[0]->E_TOT++;
+        //printf("TACHE %d :\tExclut -> %d \t(ETOT %d)\n", LIGNE[0]->BASEID, LIGNE[0]->E[LIGNE[0]->E_TOT-1]->BASEID, LIGNE[0]->E_TOT);
+        LIGNE[1]->E = (TASK**) realloc(LIGNE[1]->E, (LIGNE[1]->E_TOT+1)*sizeof(TASK*));
+        LIGNE[1]->E[LIGNE[1]->E_TOT] = LIGNE[0];
+        LIGNE[1]->E_TOT++;
+        //printf("TACHE %d :\tExclut -> %d \t(ETOT %d)\n", LIGNE[1]->BASEID, LIGNE[1]->E[LIGNE[1]->E_TOT-1]->BASEID, LIGNE[1]->E_TOT);
+    }
+
+    return dataset;
+}
+
+void DISPDATASET(DATASET dataset){
+    printf("Tâches (TTOT : %d) :\n", dataset.TASK_TOT);
+    for(int i = 0; i < dataset.TASK_TOT; i++){
+        printf("\tTache n°%d :\n");
+        printf("\t\tPrécédents (PTOT : %d) : ", dataset.TASKS[i].P_TOT);
+        for(int j = 0; j < dataset.TASKS[i].P_TOT; j++){
+            printf("%d, ", dataset.TASKS[i].P[j]->BASEID);
+        }
+        printf("\n");
+        printf("\t\tExclusions (ETOT : %d) : ", dataset.TASKS[i].E_TOT);
+        for(int j = 0; j < dataset.TASKS[i].E_TOT; j++){
+            printf("%d, ", dataset.TASKS[i].E[j]->BASEID);
+        }
+        printf("\n");
+    }
+}
+
+
 
