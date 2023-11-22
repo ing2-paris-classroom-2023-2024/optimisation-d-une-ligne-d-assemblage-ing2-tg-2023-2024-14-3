@@ -26,6 +26,12 @@ typedef struct DATAS {
     int OPERATIONS_TOT;  // Nombre total d'operation
 } DATAS;
 
+typedef struct STATION{
+    int id;
+    int temps_tot;
+    int ind_tab;
+    struct Stations** actions;
+}STAT;
 
 typedef struct DATASET {
     int T_CYCLE;
@@ -36,9 +42,10 @@ typedef struct TASK;
 typedef struct TASK {
     int BASEID;
     int POIDS;
-    struct TASK** P;
+    int TEMPS_EXE;
+    struct TASK** P;//tab de predecesseurs
     int P_TOT;
-    struct TASK** E;
+    struct TASK** E;//tab d'exclusions
     int E_TOT;
 } TASK;
 
@@ -57,6 +64,10 @@ void FREEDATAS(DATAS datas);
 DATASET DATASORT(DATAS datas);
 void DISPDATASET(DATASET dataset);
 void FREEDATASET(DATASET dataset);
+
+// Protos de la création de station
+void ajout_task(STAT* instance,TASK* tache); // à déjà séléctionné quelle tache ajouter.
+// ne fait vraiment que l'ajout
 
 // Algorithme
 void ALGO(DATASET dataset);

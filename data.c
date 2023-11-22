@@ -2,7 +2,6 @@
 
 // Chargement de Données
 
-
 DATAS SCANDATAS(char* jeu_donnees){
     //      -- FONCTION DE CHARGEMENT DES DONNEES
     //      JEU_DONNEES : Numéro du jeu de données
@@ -95,7 +94,7 @@ DATASET DATASORT(DATAS datas){
     for(int i = 0; i < datas.OPERATIONS_TOT; i++){
         dataset.TASKS = (TASK*) realloc(dataset.TASKS, (dataset.TASK_TOT+1)*sizeof(TASK) );
         dataset.TASKS[dataset.TASK_TOT].BASEID = datas.OPERATIONS[i][0];
-        dataset.TASKS[dataset.TASK_TOT].POIDS = datas.OPERATIONS[i][1];
+        dataset.TASKS[dataset.TASK_TOT].TEMPS_EXE = datas.OPERATIONS[i][1];
         dataset.TASKS[dataset.TASK_TOT].P_TOT = 0;
         dataset.TASKS[dataset.TASK_TOT].P = (TASK**) malloc( dataset.TASKS[dataset.TASK_TOT].P_TOT*sizeof(TASK*) );
         dataset.TASKS[dataset.TASK_TOT].E_TOT = 0;
