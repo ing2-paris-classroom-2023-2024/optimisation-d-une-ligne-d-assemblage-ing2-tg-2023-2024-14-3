@@ -10,19 +10,19 @@ DATAS SCANDATAS(char* jeu_donnees){
     char* temp = (char*) malloc( 50*sizeof(char) );
     DATAS datas;
 
-    printf("SCAN1\n");
-    strcpy(temp, "../fichiers_ressources/"); strcat(temp, jeu_donnees); strcat(temp, "/"); strcat(temp, "exclusions"); strcat(temp, ".txt");
+    //printf("SCAN1\n");
+    sprintf(temp, "../fichiers_ressources/%s/exclusions.txt", jeu_donnees);
     datas.EXCLUSIONS = FILLDATAS(temp, &(datas.EXCLUSIONS_TOT), 0);
 
-    printf("SCAN2\n");
-    strcpy(temp, "../fichiers_ressources/"); strcat(temp, jeu_donnees); strcat(temp, "/"); strcat(temp, "precedences"); strcat(temp, ".txt");
+    //printf("SCAN2\n");
+    sprintf(temp, "../fichiers_ressources/%s/precedences.txt", jeu_donnees);
     datas.PRECEDENCES = FILLDATAS(temp, &(datas.PRECEDENCES_TOT), 0);
 
-    printf("SCAN3\n");
-    strcpy(temp, "../fichiers_ressources/"); strcat(temp, jeu_donnees); strcat(temp, "/"); strcat(temp, "operations"); strcat(temp, ".txt");
+    //printf("SCAN3\n");
+    sprintf(temp, "../fichiers_ressources/%s/operations.txt", jeu_donnees);
     datas.OPERATIONS = FILLDATAS(temp, &(datas.OPERATIONS_TOT), 1);
 
-    strcpy(temp, "../fichiers_ressources/"); strcat(temp, jeu_donnees); strcat(temp, "/"); strcat(temp, "temps_cycle"); strcat(temp, ".txt");
+    sprintf(temp, "../fichiers_ressources/%s/temps_cycle.txt", jeu_donnees);
     FILE* fichier = fopen(temp, "rw+");
     if(!feof(fichier)) fscanf(fichier, "%d\n", &(datas.TCYCLE));
     datas.TCYCLE *= 1000;
@@ -108,6 +108,28 @@ DATASET DATASORT(DATAS datas){
         TASK* LIGNE[2];
         for(int j = 0; j < dataset.TASK_TOT; j++){
             if(datas.PRECEDENCES[i][0] == dataset.TASKS[j].BASEID){
+                LIGNE[0] = &(dataset.TASKS[j]);
+                break;
+            }
+        }
+        for(int j = 0; j < dataset.TASK_TOT; j++){
+            if(datas.PRECEDENCES[i][1] == dataset.TASKS[j].BASEID){
+                LIGNE[1] = &(dataset.TASKS[j]);
+                break;
+            }
+        }
+
+        LIGNE[0]->P = (TASK**) realloc(LIGNE[0]->P, (LIGNE[0]->P_TOT+1)*sizeof(TASK*));
+        LIGNE[0]->P[LIGNE[0]->P_TOT] = LIGNE[1];
+        LIGNE[0]->P_TOT++;
+        //printf("TACHE %d :\tAntecedent -> %d \t(PTOT %d)\n", LIGNE[0]->BASEID, LIGNE[0]->P[LIGNE[0]->P_TOT-1]->BASEID, LIGNE[0]->P_TOT);
+    }
+
+    // Ajout des successeurs
+    for(int i = 0; i < datas.PRECEDENCES_TOT; i++){
+        TASK* LIGNE[2];
+        for(int j = 0; j < dataset.TASK_TOT; j++){
+            if(datas.PRECEDENCES[i][1] == dataset.TASKS[j].BASEID){
                 LIGNE[0] = &(dataset.TASKS[j]);
                 break;
             }

@@ -17,7 +17,7 @@
 
 
 typedef struct DATAS {
-    int TCYCLE;         // Temps de Cycle
+    int TCYCLE;          // Temps de Cycle
     int** EXCLUSIONS;    // Données d'exclusion
     int EXCLUSIONS_TOT;  // Nombre total d'exclusion
     int** PRECEDENCES;   // Données de précédence
@@ -25,13 +25,6 @@ typedef struct DATAS {
     int** OPERATIONS ;   // Données d'opération
     int OPERATIONS_TOT;  // Nombre total d'operation
 } DATAS;
-
-typedef struct STATION{
-    int id;
-    int temps_tot;
-    int ind_tab;
-    struct Stations** actions;
-}STAT;
 
 typedef struct DATASET {
     int T_CYCLE;
@@ -43,11 +36,20 @@ typedef struct TASK {
     int BASEID;
     int POIDS;
     int TEMPS_EXE;
-    struct TASK** P;//tab de predecesseurs
+    struct TASK** P;    // Tableau des Précédents
     int P_TOT;
-    struct TASK** E;//tab d'exclusions
+    struct TASK** S;    // Tableau des Successeurs
+    int S_TOT;
+    struct TASK** E;    // Tableau des Exclusions
     int E_TOT;
 } TASK;
+
+typedef struct STATION{
+    int id;
+    int temps_tot;
+    int ind_tab;
+    struct TASK** actions;
+}STAT;
 
 
 
@@ -71,6 +73,7 @@ void ajout_task(STAT* instance,TASK* tache); // à déjà séléctionné quelle 
 
 // Algorithme
 void ALGO(DATASET dataset);
+void PERT_PARTIEL(DATASET dataset);
 
 
 
