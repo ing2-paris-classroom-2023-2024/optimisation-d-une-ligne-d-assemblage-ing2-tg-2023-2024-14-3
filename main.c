@@ -85,7 +85,7 @@ void ALGO(DATASET dataset){
     }
 
     for(int i = 0; i < nb_stations; i++){
-        //for(int j = 0; j < stations[i].)
+        //for(int j = 0; j < stations[i].d)
     }
 
 }
