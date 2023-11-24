@@ -36,6 +36,7 @@ typedef struct TASK {
     int BASEID;
     int POIDS;
     int TEMPS_EXE;
+    bool USED;
     struct TASK** P;    // Tableau des Précédents
     int P_TOT;
     struct TASK** S;    // Tableau des Successeurs
@@ -49,7 +50,7 @@ typedef struct STATION{
     int temps_tot;
     int ind_tab;
     struct TASK** actions;
-}STAT;
+}STATION;
 
 
 
@@ -68,12 +69,12 @@ void DISPDATASET(DATASET dataset);
 void FREEDATASET(DATASET dataset);
 
 // Protos de la création de station
-void ajout_task(STAT* instance,TASK* tache); // à déjà séléctionné quelle tache ajouter.
+void ajout_task(STATION* instance,TASK* tache); // à déjà séléctionné quelle tache ajouter.
 // ne fait vraiment que l'ajout
 
 // Algorithme
 void ALGO(DATASET dataset);
-void PERT_PARTIEL(DATASET dataset);
+int FINTRAITEMENT(DATASET dataset);
 
 
 

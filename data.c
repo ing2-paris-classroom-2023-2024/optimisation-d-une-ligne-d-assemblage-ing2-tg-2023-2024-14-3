@@ -95,8 +95,11 @@ DATASET DATASORT(DATAS datas){
         dataset.TASKS = (TASK*) realloc(dataset.TASKS, (dataset.TASK_TOT+1)*sizeof(TASK) );
         dataset.TASKS[dataset.TASK_TOT].BASEID = datas.OPERATIONS[i][0];
         dataset.TASKS[dataset.TASK_TOT].TEMPS_EXE = datas.OPERATIONS[i][1];
+        dataset.TASKS[dataset.TASK_TOT].USED = 0;
         dataset.TASKS[dataset.TASK_TOT].P_TOT = 0;
         dataset.TASKS[dataset.TASK_TOT].P = (TASK**) malloc( dataset.TASKS[dataset.TASK_TOT].P_TOT*sizeof(TASK*) );
+        dataset.TASKS[dataset.TASK_TOT].S_TOT = 0;
+        dataset.TASKS[dataset.TASK_TOT].S = (TASK**) malloc( dataset.TASKS[dataset.TASK_TOT].S_TOT*sizeof(TASK*) );
         dataset.TASKS[dataset.TASK_TOT].E_TOT = 0;
         dataset.TASKS[dataset.TASK_TOT].E = (TASK**) malloc( dataset.TASKS[dataset.TASK_TOT].E_TOT*sizeof(TASK*) );
         dataset.TASK_TOT++;
@@ -119,17 +122,17 @@ DATASET DATASORT(DATAS datas){
             }
         }
 
-        LIGNE[0]->P = (TASK**) realloc(LIGNE[0]->P, (LIGNE[0]->P_TOT+1)*sizeof(TASK*));
-        LIGNE[0]->P[LIGNE[0]->P_TOT] = LIGNE[1];
-        LIGNE[0]->P_TOT++;
-        //printf("TACHE %d :\tAntecedent -> %d \t(PTOT %d)\n", LIGNE[0]->BASEID, LIGNE[0]->P[LIGNE[0]->P_TOT-1]->BASEID, LIGNE[0]->P_TOT);
+        LIGNE[1]->P = (TASK**) realloc(LIGNE[1]->P, (LIGNE[1]->P_TOT+1)*sizeof(TASK*));
+        LIGNE[1]->P[LIGNE[1]->P_TOT] = LIGNE[0];
+        LIGNE[1]->P_TOT++;
+        //printf("TACHE %d :\tAntecedent -> %d \t(PTOT %d)\n", LIGNE[1]->BASEID, LIGNE[1]->P[LIGNE[1]->P_TOT-1]->BASEID, LIGNE[1]->P_TOT);
     }
 
     // Ajout des successeurs
     for(int i = 0; i < datas.PRECEDENCES_TOT; i++){
         TASK* LIGNE[2];
         for(int j = 0; j < dataset.TASK_TOT; j++){
-            if(datas.PRECEDENCES[i][1] == dataset.TASKS[j].BASEID){
+            if(datas.PRECEDENCES[i][0] == dataset.TASKS[j].BASEID){
                 LIGNE[0] = &(dataset.TASKS[j]);
                 break;
             }
@@ -141,10 +144,10 @@ DATASET DATASORT(DATAS datas){
             }
         }
 
-        LIGNE[0]->P = (TASK**) realloc(LIGNE[0]->P, (LIGNE[0]->P_TOT+1)*sizeof(TASK*));
-        LIGNE[0]->P[LIGNE[0]->P_TOT] = LIGNE[1];
-        LIGNE[0]->P_TOT++;
-        //printf("TACHE %d :\tAntecedent -> %d \t(PTOT %d)\n", LIGNE[0]->BASEID, LIGNE[0]->P[LIGNE[0]->P_TOT-1]->BASEID, LIGNE[0]->P_TOT);
+        LIGNE[0]->S = (TASK**) realloc(LIGNE[0]->S, (LIGNE[0]->S_TOT+1)*sizeof(TASK*));
+        LIGNE[0]->S[LIGNE[0]->S_TOT] = LIGNE[1];
+        LIGNE[0]->S_TOT++;
+        //printf("TACHE %d :\tSuccesseur -> %d \t(PTOT %d)\n", LIGNE[0]->BASEID, LIGNE[0]->S[LIGNE[0]->S_TOT-1]->BASEID, LIGNE[0]->S_TOT);
     }
 
     //Ajout des exclusions
@@ -184,6 +187,11 @@ void DISPDATASET(DATASET dataset){
             printf("%d, ", dataset.TASKS[i].P[j]->BASEID);
         }
         printf("\n");
+        printf("\t\tSuccesseur (STOT : %d) : ", dataset.TASKS[i].S_TOT);
+        for(int j = 0; j < dataset.TASKS[i].S_TOT; j++){
+            printf("%d, ", dataset.TASKS[i].S[j]->BASEID);
+        }
+        printf("\n");
         printf("\t\tExclusions (ETOT : %d) : ", dataset.TASKS[i].E_TOT);
         for(int j = 0; j < dataset.TASKS[i].E_TOT; j++){
             printf("%d, ", dataset.TASKS[i].E[j]->BASEID);
@@ -195,6 +203,7 @@ void DISPDATASET(DATASET dataset){
 void FREEDATASET(DATASET dataset){
     for(int i = 0; i < dataset.TASK_TOT; i++){
         free(dataset.TASKS[i].P);
+        free(dataset.TASKS[i].S);
         free(dataset.TASKS[i].E);
     }
     free(dataset.TASKS);
