@@ -49,13 +49,16 @@ typedef struct STATION{
     int id;
     int temps_tot;
     int ind_tab;
-    struct TASK** actions;
+    struct TASK** selection;
 }STATION;
 
 
 
 
 // **********  PROTOS   **********
+
+// Fonctions globales
+void QuickSortRecursive(int* data, int left, int right); // Tri Rapide
 
 // Protos de Chargement de Données
 DATAS SCANDATAS(char* jeu_donnees);

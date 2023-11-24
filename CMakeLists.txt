@@ -7,4 +7,4 @@ add_executable(2023S1_ECELECAR
         main.c
         data.c
         header_general.h
-        )
+        global.c)

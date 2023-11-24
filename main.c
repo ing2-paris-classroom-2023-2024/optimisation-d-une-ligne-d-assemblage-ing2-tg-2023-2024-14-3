@@ -25,13 +25,14 @@ void ALGO(DATASET dataset){
         stations = (STATION*) realloc(stations, (nb_stations+1)*sizeof(STATION));
 
         // Boucle de répétition dans une station
-        int nb_actions = 1;
-        while(nb_actions){
-            nb_actions = 0;
+        int comp_selection = 1;
+        int nb_selection = 0;
+        TASK** selection = (TASK**) malloc(nb_selection*sizeof(TASK*));
+
+        while(comp_selection - nb_selection){
+            comp_selection = nb_selection;
 
             // Détecteur de sommet valide en fonction des PRECEDENCES
-            int nb_selection = 0;
-            TASK** selection = (TASK**) malloc(nb_selection*sizeof(TASK*));
             for(int i = 0; i < dataset.TASK_TOT; i++){
                 // Si tous les prédécesseurs sont valides alors valider la tache
                 bool cond = 1;
@@ -41,41 +42,51 @@ void ALGO(DATASET dataset){
                         break;
                     }
                 }
-                if(cond){
+                if(cond && !dataset.TASKS[i].USED){
                     selection = (TASK**) realloc(selection, (nb_selection+1)*sizeof(TASK*));
                     selection[nb_selection] = &(dataset.TASKS[i]);
-                    printf("%d : (PTOT = %d)\n", dataset.TASKS[i].BASEID, dataset.TASKS[i].P_TOT);
+                    //printf("%d : (PTOT = %d)\n", dataset.TASKS[i].BASEID, dataset.TASKS[i].P_TOT);
                     nb_selection++;
                 }
             }
-            printf("LIMITE");
 
+            printf("PRECEDENCE : \n");
+            for(int u = 0; u < nb_selection; u++) printf("%d : (PTOT = %d)\n", selection[u]->BASEID, selection[u]->S_TOT);
+
+            printf("EXCLUSION : \n");
             for (int i = 0; i < nb_selection; i++){
                 for(int j = 0; j < selection[i]->E_TOT; j++){
-                    for(int k = 0; k < nb_selection; k++){
+                    for(int k = i+1; k < nb_selection; k++){
                         if(selection[i]->E[j]->BASEID == selection[k]->BASEID){
-                            if(selection[i]->E[j]->S_TOT >= selection[k]->S_TOT){
-                                for(int l )
+                            int indice = (selection[i]->E[j]->S_TOT >= selection[k]->S_TOT) ? k : i;
+                            for(int l = indice; l < nb_selection-1; l++){
+                                selection[l] = selection[l+1];
                             }
+                            selection = (TASK**) realloc (selection, (nb_selection-1)*sizeof(TASK*));
+                            nb_selection--;
+                            for(int u = 0; u < nb_selection; u++) printf("%d : (PTOT = %d)\n", selection[u]->BASEID, selection[u]->S_TOT);
+                            printf("\n");
                         }
                     }
 
                 }
             }
-            while(1) {
-                for (int i = 0; i < nb_selection; i++) {
-                    printf("%d : (PTOT = %d)\n", selection[i]->BASEID, selection[i]->P_TOT);
-                }
-                *selection = *selection + 1;
-                nb_selection--;
+
+            for(int i = 0; i < nb_selection; i++){
+                selection[i]->USED = 1;
             }
 
-            printf("%d : VAL=%d\n", nb_stations, nb_actions);
+            printf("TEMOINFINFINFINFINFINFIN (SELECTIONS = %d, OLD_SELECTIONS = %d)\n", nb_selection, comp_selection);
+
+            //printf("%d : VAL=%d\n", nb_stations, nb_actions);
         }
 
         nb_stations++;
     }
 
+    for(int i = 0; i < nb_stations; i++){
+        //for(int j = 0; j < stations[i].)
+    }
 
 }
 
