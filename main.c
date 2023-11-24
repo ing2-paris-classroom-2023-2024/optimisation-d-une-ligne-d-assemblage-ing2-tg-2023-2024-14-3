@@ -51,26 +51,40 @@ void ALGO(DATASET dataset){
             }
 
             printf("PRECEDENCE : \n");
-            for(int u = 0; u < nb_selection; u++) printf("%d : (PTOT = %d)\n", selection[u]->BASEID, selection[u]->S_TOT);
+            for(int u = 0; u < nb_selection; u++) printf("%d : (PTOT = %d)\n", selection[u]->BASEID, selection[u]->P_TOT);
 
             printf("EXCLUSION : \n");
             for (int i = 0; i < nb_selection; i++){
                 for(int j = 0; j < selection[i]->E_TOT; j++){
                     for(int k = i+1; k < nb_selection; k++){
+                        printf("\tTRY : POUR (%d) %d on compare (%d) %d   et   (%d) %d\n", i, selection[i]->BASEID, j, selection[i]->E[j]->BASEID, k, selection[k]->BASEID);
                         if(selection[i]->E[j]->BASEID == selection[k]->BASEID){
                             int indice = (selection[i]->E[j]->S_TOT >= selection[k]->S_TOT) ? k : i;
+                            for(int l = 0; l < selection[indice]->S_TOT; l++){
+                                printf("\tPARCOURS (%d) : succ. %d -> USED-%d\n", selection[indice]->BASEID, selection[indice]->S[l]->BASEID, selection[indice]->S[l]->USED);
+                                if(selection[indice]->S[l]->USED == 1){
+                                    printf("BREAK : ANN. SUPPR. de %d (%d utilisé)\n", selection[indice]->BASEID, selection[indice]->S[l]->BASEID);
+                                    break;
+                                }
+                            }
+                            selection[indice]->USED = 0;
                             for(int l = indice; l < nb_selection-1; l++){
                                 selection[l] = selection[l+1];
                             }
                             selection = (TASK**) realloc (selection, (nb_selection-1)*sizeof(TASK*));
                             nb_selection--;
-                            for(int u = 0; u < nb_selection; u++) printf("%d : (PTOT = %d)\n", selection[u]->BASEID, selection[u]->S_TOT);
+                            for(int u = 0; u < nb_selection; u++) printf("%d : (PTOT = %d)\n", selection[u]->BASEID, selection[u]->P_TOT);
                             printf("\n");
                         }
                     }
 
                 }
             }
+
+            printf("TEMPS : \n");
+
+
+
 
             for(int i = 0; i < nb_selection; i++){
                 selection[i]->USED = 1;
@@ -80,6 +94,7 @@ void ALGO(DATASET dataset){
 
             //printf("%d : VAL=%d\n", nb_stations, nb_actions);
         }
+
 
         nb_stations++;
     }
