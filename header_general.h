@@ -43,12 +43,15 @@ typedef struct TASK {
     int S_TOT;
     struct TASK** E;    // Tableau des Exclusions
     int E_TOT;
+
+    int TEMPS_TOT;
+    int TEMOIN;
 } TASK;
 
 typedef struct STATION{
     int id;
     int temps_tot;
-    int ind_tab;
+    int nb_selections;
     struct TASK** selection;
 }STATION;
 
@@ -59,6 +62,7 @@ typedef struct STATION{
 
 // Fonctions globales
 void QuickSortRecursive(int* data, int left, int right); // Tri Rapide
+void DFS(DATASET dataset, TASK** selection, int nb_selection, TASK* tache, int TEMPS_PREC);  // Parcours DFS d'un element de station
 
 // Protos de Chargement de Données
 DATAS SCANDATAS(char* jeu_donnees);

@@ -102,6 +102,8 @@ DATASET DATASORT(DATAS datas){
         dataset.TASKS[dataset.TASK_TOT].S = (TASK**) malloc( dataset.TASKS[dataset.TASK_TOT].S_TOT*sizeof(TASK*) );
         dataset.TASKS[dataset.TASK_TOT].E_TOT = 0;
         dataset.TASKS[dataset.TASK_TOT].E = (TASK**) malloc( dataset.TASKS[dataset.TASK_TOT].E_TOT*sizeof(TASK*) );
+        dataset.TASKS[dataset.TASK_TOT].TEMPS_TOT = 0;
+        dataset.TASKS[dataset.TASK_TOT].TEMOIN = 0;
         dataset.TASK_TOT++;
     }
     dataset.T_CYCLE = datas.TCYCLE;
