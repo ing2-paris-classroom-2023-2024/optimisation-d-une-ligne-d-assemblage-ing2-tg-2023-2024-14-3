@@ -127,16 +127,16 @@ void ALGO(DATASET dataset){
         printf("\n");
     }
 
+    int std = 1;
+    system("cls");
+    //printf("\e[1;1H\e[2J");
+    //clrscr();
+    setbuf(stdout, 0);
+    printf("NB. STATIONS : %d\n", nb_stations);
+    scanf("%d", &std);
 }
 
 int FINTRAITEMENT(DATASET dataset){
     for(int i = 0; i < dataset.TASK_TOT; i++) if(!dataset.TASKS[i].USED) return 0;
-    return 1;
-}
-
-int FINSTATION(DATASET dataset){
-    for(int i = 0; i < dataset.TASK_TOT; i++){
-        if(dataset.TASKS[i].USED ) return 0;
-    }
     return 1;
 }
