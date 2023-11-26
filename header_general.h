@@ -55,10 +55,29 @@ struct TASK {
     /*
      * Structure TASK contenant les informations pour chaque tâche à effectuer.
      *
-     * */
+     * BASEID (entier | int) : Numéro réel de la tâche.
+     *
+     * TEMPS_EXE (entier | int) : Temps de réalisation de la tâche en ms
+     *
+     * USED (booléen | bool) : Indique si la tâche est assignée ou non.
+     *
+     * P (Tableau de pointeurs sur TASK | TASK**) : Tableau d'adresse des tâches précédentes la tâche actuelle.
+     *
+     * P_TOT (entier | int) : Nombre de prédécesseurs de la tâche actuelle.
+     *
+     * S (Tableau de pointeurs sur TASK | TASK**) : Tableau d'adresse des tâches succédant à la tâche actuelle.
+     *
+     * S_TOT (entier | int) : Nombre de successeurs de la tâche actuelle.
+     *
+     * E (Tableau de pointeurs sur TASK | TASK**) : Tableau d'adresse des tâches ayant une relation d'exclusion avec
+     *      la tâche actuelle.
+     *
+     * E_TOT (entier | int) : Nombre de relations d'exclusions avec cette tâche
+     *
+     * TEMOIN (entier | int) : Argument de colorisation dans le parcours DFS utilisé.
+     */
 
     int BASEID;
-    int POIDS;
     int TEMPS_EXE;
     bool USED;
     struct TASK** P;    // Tableau des Précédents
@@ -67,25 +86,30 @@ struct TASK {
     int S_TOT;
     struct TASK** E;    // Tableau des Exclusions
     int E_TOT;
-
     int TEMPS_TOT;
     int TEMOIN;
 };
 
 typedef struct STATION{
-    int id;
-    int temps_tot;
-    int nb_selections;
-    struct TASK** selection;
+    /*
+     * Structure qui définie chaque station et les répertorie les tâches faites à cette dernière.
+     *
+     * TEMPS_TOT (entier | int) : Durée totale en ms des actions au sein de la station.
+     *
+     * NB_SELECTIONS (entier | int) : Nombre de tâches présentes dans la station.
+     *
+     * SELECTION (Tableau de pointeurs sur TASK | TASK**) : Tableau d'adresse des tâches effectuées par la station.
+     */
+
+    int TEMPS_TOT;
+    int NB_SELECTIONS;
+    struct TASK** SELECTION;
+
 }STATION;
-
-
-
 
 // **********  PROTOS   **********
 
 // Fonctions globales
-void QuickSortRecursive(int* data, int left, int right); // Tri Rapide
 void DFS(DATASET dataset, TASK** selection, int nb_selection, TASK* tache, int TEMPS_PREC);  // Parcours DFS d'un element de station
 
 // Protos de Chargement de Données
@@ -99,14 +123,8 @@ DATASET DATASORT(DATAS datas);
 void DISPDATASET(DATASET dataset);
 void FREEDATASET(DATASET dataset);
 
-// Protos de la création de station
-void ajout_task(STATION* instance,TASK* tache); // à déjà séléctionné quelle tache ajouter.
-// ne fait vraiment que l'ajout
-
 // Algorithme
 void ALGO(DATASET dataset);
 int FINTRAITEMENT(DATASET dataset);
-
-
 
 #endif
