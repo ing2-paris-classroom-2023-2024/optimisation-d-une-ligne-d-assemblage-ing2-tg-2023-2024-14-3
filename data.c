@@ -181,10 +181,11 @@ DATASET DATASORT(DATAS datas){
 }
 
 void DISPDATASET(DATASET dataset){
-    printf("Tâches (TTOT : %d) :\n", dataset.TASK_TOT);
+    printf("Taches (TTOT : %d) :\n", dataset.TASK_TOT);
     for(int i = 0; i < dataset.TASK_TOT; i++){
-        printf("\tTache n°%d :\n", dataset.TASKS[i].BASEID);
-        printf("\t\tPrécédents (PTOT : %d) : ", dataset.TASKS[i].P_TOT);
+        printf("\tTache n %d :\n", dataset.TASKS[i].BASEID);
+        printf("\tTemps exe : %d ms.\n",dataset.TASKS[i].TEMPS_EXE);
+        printf("\t\tPrecedents (PTOT : %d) : ", dataset.TASKS[i].P_TOT);
         for(int j = 0; j < dataset.TASKS[i].P_TOT; j++){
             printf("%d, ", dataset.TASKS[i].P[j]->BASEID);
         }

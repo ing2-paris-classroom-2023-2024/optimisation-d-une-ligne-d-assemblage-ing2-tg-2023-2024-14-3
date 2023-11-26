@@ -10,29 +10,53 @@
 
 // **********  MACROS   **********
 
-
-
-
 // ********** STRUCTURE **********
 
-
 typedef struct DATAS {
+    /*
+     * Structure DATAS qui va lire les fichiers du jeu de donnée choisi et remplir une instance de structure DATASET.
+     *
+     * Le jeu de donnés doit être renseigné dans un dossier numéroté et se situer dans le répertoire
+     *      "fichiers_ressources".
+     *
+     * Cette structure est détruite lorsque l'instance de la structure DATASET est remplie.
+     */
     int TCYCLE;          // Temps de Cycle
+
     int** EXCLUSIONS;    // Données d'exclusion
     int EXCLUSIONS_TOT;  // Nombre total d'exclusion
+
     int** PRECEDENCES;   // Données de précédence
     int PRECEDENCES_TOT; // Nombre total de precedence
+
     int** OPERATIONS ;   // Données d'opération
-    int OPERATIONS_TOT;  // Nombre total d'operation
+    int OPERATIONS_TOT;  // Nombre total d'opérations
 } DATAS;
 
+typedef struct TASK TASK;
+
 typedef struct DATASET {
+    /*
+     * Structure qui répertorie toutes les informations nécessaires au code à partir d'un jeu de donnés.
+     *
+     * T_CYCLE (entier | int) : Temps de cycle que doivent respecter les stations.
+     *
+     * TASK_TOT (entier | int) : Nombre de tâches à effectuer lors de ce programme.
+     *
+     * TASKS (tableau de structures TASK | TASK*) : Tableau contenant les instances de structure TASK
+     */
     int T_CYCLE;
     int TASK_TOT;
-    struct TASK* TASKS;
+    TASK* TASKS;
+
 } DATASET;
-typedef struct TASK;
-typedef struct TASK {
+
+struct TASK {
+    /*
+     * Structure TASK contenant les informations pour chaque tâche à effectuer.
+     *
+     * */
+
     int BASEID;
     int POIDS;
     int TEMPS_EXE;
@@ -46,7 +70,7 @@ typedef struct TASK {
 
     int TEMPS_TOT;
     int TEMOIN;
-} TASK;
+};
 
 typedef struct STATION{
     int id;
