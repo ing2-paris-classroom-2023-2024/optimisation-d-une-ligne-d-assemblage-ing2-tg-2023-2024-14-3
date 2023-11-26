@@ -6,7 +6,6 @@ int main() {
     DATAS datas = SCANDATAS(jeu_donnees);
 
     DISPDATAS(datas);
-    // Pour la version alternative : ALGO2
 
     DATASET dataset = DATASORT(datas);
     DISPDATASET(dataset);
