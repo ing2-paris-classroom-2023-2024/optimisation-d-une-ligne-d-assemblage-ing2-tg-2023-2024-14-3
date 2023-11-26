@@ -1,6 +1,6 @@
 #include "header_general.h"
 
-void DFS(DATASET dataset, TASK** selection, int nb_selection, TASK* tache, int MARQUEUR_PREC){
+void DFS(DATASET dataset, TASK** SELECTION, int nb_SELECTION, TASK* tache, int MARQUEUR_PREC){
     /*
      *  PROCÉDURE DE PARCOURS DFS RÉCURSIF
      *  GRAPHE    : Variable contenant le graphe
@@ -19,11 +19,11 @@ void DFS(DATASET dataset, TASK** selection, int nb_selection, TASK* tache, int M
 
     for(int i = 0; i < tache->S_TOT; i++){
         bool cond = 0;
-        for(int j = 0; j < nb_selection; j++){
-            if(selection[j]->BASEID == tache->S[i]->BASEID) cond = 1;
+        for(int j = 0; j < nb_SELECTION; j++){
+            if(SELECTION[j]->BASEID == tache->S[i]->BASEID) cond = 1;
         }
         if(cond){
-            DFS(dataset, selection, nb_selection, tache->S[i], tache->MARQUEUR);
+            DFS(dataset, SELECTION, nb_SELECTION, tache->S[i], tache->MARQUEUR);
         }
     }
     tache->TEMOIN = 2;
@@ -33,19 +33,19 @@ void ALGO(DATASET dataset){
 
     int nb_stations = 0;
     STATION* stations = (STATION*) malloc(nb_stations*sizeof(STATION));
-    stations->temps_tot = 0;
+    stations->TEMPS_TOT = 0;
 
     // Boucle Principale
     while(!FINTRAITEMENT(dataset)){
         stations = (STATION*) realloc(stations, (nb_stations+1)*sizeof(STATION));
 
         // Boucle de répétition dans une station
-        int comp_selection = 1;
-        int nb_selection = 0;
-        TASK** selection = (TASK**) malloc(nb_selection*sizeof(TASK*));
+        int comp_SELECTION = 1;
+        int nb_SELECTION = 0;
+        TASK** SELECTION = (TASK**) malloc(nb_SELECTION*sizeof(TASK*));
 
-        while(comp_selection - nb_selection){
-            comp_selection = nb_selection;
+        while(comp_SELECTION - nb_SELECTION){
+            comp_SELECTION = nb_SELECTION;
 
             // Détecteur de sommet valide en fonction des PRECEDENCES
             for(int i = 0; i < dataset.TASK_TOT; i++){
@@ -58,41 +58,41 @@ void ALGO(DATASET dataset){
                     }
                 }
                 if(cond && !dataset.TASKS[i].USED){
-                    selection = (TASK**) realloc(selection, (nb_selection+1)*sizeof(TASK*));
-                    selection[nb_selection] = &(dataset.TASKS[i]);
+                    SELECTION = (TASK**) realloc(SELECTION, (nb_SELECTION+1)*sizeof(TASK*));
+                    SELECTION[nb_SELECTION] = &(dataset.TASKS[i]);
                     //printf("%d : (PTOT = %d)\n", dataset.TASKS[i].BASEID, dataset.TASKS[i].P_TOT);
-                    nb_selection++;
+                    nb_SELECTION++;
                 }
             }
-            for(int i = 0; i < nb_selection; i++){
-                selection[i]->USED = 1;
+            for(int i = 0; i < nb_SELECTION; i++){
+                SELECTION[i]->USED = 1;
             }
 
             printf("PRECEDENCE : \n");
-            for(int u = 0; u < nb_selection; u++) printf("%d : (PTOT = %d)\n", selection[u]->BASEID, selection[u]->P_TOT);
+            for(int u = 0; u < nb_SELECTION; u++) printf("%d : (PTOT = %d)\n", SELECTION[u]->BASEID, SELECTION[u]->P_TOT);
 
             printf("EXCLUSION : \n");
-            for (int i = 0; i < nb_selection; i++){
-                for(int j = 0; j < selection[i]->E_TOT; j++){
-                    for(int k = i+1; k < nb_selection; k++){
-                        //printf("\tTRY : POUR (%d) %d on compare (%d) %d   et   (%d) %d\n", i, selection[i]->BASEID, j, selection[i]->E[j]->BASEID, k, selection[k]->BASEID);
-                        if(selection[i]->E[j]->BASEID == selection[k]->BASEID){
-                            int indice = (selection[i]->E[j]->S_TOT >= selection[k]->S_TOT) ? k : i;
-                            for(int l = 0; l < selection[indice]->S_TOT; l++){
-                                //printf("\tPARCOURS (%d) : succ. %d -> USED-%d\n", selection[indice]->BASEID, selection[indice]->S[l]->BASEID, selection[indice]->S[l]->USED);
-                                if(selection[indice]->S[l]->USED == 1){
-                                    printf("BREAK : ANN. SUPPR. de %d (%d utilise)\n", selection[indice]->BASEID, selection[indice]->S[l]->BASEID);
-                                    indice = (selection[i]->E[j]->S_TOT >= selection[k]->S_TOT) ? i : k;
+            for (int i = 0; i < nb_SELECTION; i++){
+                for(int j = 0; j < SELECTION[i]->E_TOT; j++){
+                    for(int k = i+1; k < nb_SELECTION; k++){
+                        //printf("\tTRY : POUR (%d) %d on compare (%d) %d   et   (%d) %d\n", i, SELECTION[i]->BASEID, j, SELECTION[i]->E[j]->BASEID, k, SELECTION[k]->BASEID);
+                        if(SELECTION[i]->E[j]->BASEID == SELECTION[k]->BASEID){
+                            int indice = (SELECTION[i]->E[j]->S_TOT >= SELECTION[k]->S_TOT) ? k : i;
+                            for(int l = 0; l < SELECTION[indice]->S_TOT; l++){
+                                //printf("\tPARCOURS (%d) : succ. %d -> USED-%d\n", SELECTION[indice]->BASEID, SELECTION[indice]->S[l]->BASEID, SELECTION[indice]->S[l]->USED);
+                                if(SELECTION[indice]->S[l]->USED == 1){
+                                    printf("BREAK : ANN. SUPPR. de %d (%d utilise)\n", SELECTION[indice]->BASEID, SELECTION[indice]->S[l]->BASEID);
+                                    indice = (SELECTION[i]->E[j]->S_TOT >= SELECTION[k]->S_TOT) ? i : k;
                                     break;
                                 }
                             }
-                            selection[indice]->USED = 0;
-                            for(int l = indice; l < nb_selection-1; l++){
-                                selection[l] = selection[l+1];
+                            SELECTION[indice]->USED = 0;
+                            for(int l = indice; l < nb_SELECTION-1; l++){
+                                SELECTION[l] = SELECTION[l+1];
                             }
-                            selection = (TASK**) realloc (selection, (nb_selection-1)*sizeof(TASK*));
-                            nb_selection--;
-                            for(int u = 0; u < nb_selection; u++) printf("%d : (PTOT = %d)\n", selection[u]->BASEID, selection[u]->P_TOT);
+                            SELECTION = (TASK**) realloc (SELECTION, (nb_SELECTION-1)*sizeof(TASK*));
+                            nb_SELECTION--;
+                            for(int u = 0; u < nb_SELECTION; u++) printf("%d : (PTOT = %d)\n", SELECTION[u]->BASEID, SELECTION[u]->P_TOT);
                             printf("\n");
                         }
                     }
@@ -101,58 +101,58 @@ void ALGO(DATASET dataset){
             }
 
             printf("TEMPS : \n");
-            for(int i = 0; i < nb_selection; i++){
-                selection[i]->MARQUEUR = 0;
+            for(int i = 0; i < nb_SELECTION; i++){
+                SELECTION[i]->MARQUEUR = 0;
             }
-            for(int i = 0; i < nb_selection; i++){
-                for(int j = 0; j < nb_selection; j++){
-                    selection[j]->TEMOIN = 0;
+            for(int i = 0; i < nb_SELECTION; i++){
+                for(int j = 0; j < nb_SELECTION; j++){
+                    SELECTION[j]->TEMOIN = 0;
                 }
-                DFS(dataset, selection, nb_selection, selection[i], 0);
+                DFS(dataset, SELECTION, nb_SELECTION, SELECTION[i], 0);
             }
-            //for(int i = 0; i < nb_selection; i++) printf("\t%d : %d\n", selection[i]->BASEID, selection[i]->TEMPS_TOT);
+            //for(int i = 0; i < nb_SELECTION; i++) printf("\t%d : %d\n", SELECTION[i]->BASEID, SELECTION[i]->TEMPS_TOT);
             do{
-                for(int u = 0; u < nb_selection; u++) printf("%d : (MARQUEUR = %d, S_TOT =  %d)\n", selection[u]->BASEID, selection[u]->MARQUEUR, selection[u]->S_TOT);
-                stations[nb_stations].temps_tot = 0;
-                for(int i = 0; i < nb_selection; i++){
-                    stations[nb_stations].temps_tot += selection[i]->TEMPS_EXE;
+                for(int u = 0; u < nb_SELECTION; u++) printf("%d : (MARQUEUR = %d, S_TOT =  %d)\n", SELECTION[u]->BASEID, SELECTION[u]->MARQUEUR, SELECTION[u]->S_TOT);
+                stations[nb_stations].TEMPS_TOT = 0;
+                for(int i = 0; i < nb_SELECTION; i++){
+                    stations[nb_stations].TEMPS_TOT += SELECTION[i]->TEMPS_EXE;
                 }
-                if(stations[nb_stations].temps_tot > dataset.T_CYCLE){
+                if(stations[nb_stations].TEMPS_TOT > dataset.T_CYCLE){
                     int indice = 0;
-                    for(int i = 0; i < nb_selection; i++){
-                        if(selection[indice]->MARQUEUR <= selection[i]->MARQUEUR){
-                            if(selection[indice]->MARQUEUR == selection[i]->MARQUEUR){
-                                indice = (selection[indice]->S_TOT < selection[i]->S_TOT) ? indice : i;
+                    for(int i = 0; i < nb_SELECTION; i++){
+                        if(SELECTION[indice]->MARQUEUR <= SELECTION[i]->MARQUEUR){
+                            if(SELECTION[indice]->MARQUEUR == SELECTION[i]->MARQUEUR){
+                                indice = (SELECTION[indice]->S_TOT < SELECTION[i]->S_TOT) ? indice : i;
                             }
                             else{
                                 indice = i;
                             }
                         }
                     }
-                    selection[indice]->USED = 0;
-                    for(int l = indice; l < nb_selection-1; l++){
-                        selection[l] = selection[l+1];
+                    SELECTION[indice]->USED = 0;
+                    for(int l = indice; l < nb_SELECTION-1; l++){
+                        SELECTION[l] = SELECTION[l+1];
                     }
-                    selection = (TASK**) realloc (selection, (nb_selection-1)*sizeof(TASK*));
-                    nb_selection--;
+                    SELECTION = (TASK**) realloc (SELECTION, (nb_SELECTION-1)*sizeof(TASK*));
+                    nb_SELECTION--;
                 }
-            }while(stations[nb_stations].temps_tot > dataset.T_CYCLE);
+            }while(stations[nb_stations].TEMPS_TOT > dataset.T_CYCLE);
             printf("\n");
 
-            printf("TEMOIN DE FIN (SELECTIONS = %d, OLD_SELECTIONS = %d)\n\n\n", nb_selection, comp_selection);
+            printf("TEMOIN DE FIN (SELECTIONS = %d, OLD_SELECTIONS = %d)\n\n\n", nb_SELECTION, comp_SELECTION);
 
             //printf("%d : VAL=%d\n", nb_stations, nb_actions);
         }
-        stations[nb_stations].selection = selection;
-        stations[nb_stations].nb_selections = nb_selection;
+        stations[nb_stations].SELECTION = SELECTION;
+        stations[nb_stations].NB_SELECTIONS = nb_SELECTION;
 
         nb_stations++;
     }
 
     for(int i = 0; i < nb_stations; i++){
-        printf("STATION %d (Nombre d'actions a executer : %d  |  Temps total : %d ms) :\n", i+1, stations[i].nb_selections, stations[i].temps_tot);
-        for(int j = 0; j < stations[i].nb_selections; j++){
-            printf("\tACTION %d :\tN. ACTION : %d (Duree : %d ms, Marqueur : %d)\n", j+1, stations[i].selection[j]->BASEID, stations[i].selection[j]->TEMPS_EXE, stations[i].selection[j]->MARQUEUR);
+        printf("STATION %d (Nombre d'actions a executer : %d  |  Temps total : %d ms) :\n", i+1, stations[i].NB_SELECTIONS, stations[i].TEMPS_TOT);
+        for(int j = 0; j < stations[i].NB_SELECTIONS; j++){
+            printf("\tACTION %d :\tN. ACTION : %d (Duree : %d ms, Marqueur : %d)\n", j+1, stations[i].SELECTION[j]->BASEID, stations[i].SELECTION[j]->TEMPS_EXE, stations[i].SELECTION[j]->MARQUEUR);
         }
         printf("\n");
     }
