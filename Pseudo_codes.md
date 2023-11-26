@@ -1,4 +1,4 @@
-## Psuedo code pour la version alternative du projet :
+## Pseudo code pour la version alternative du projet :
 
 ```c
 void ALGO2(DATASET dataset){
@@ -38,7 +38,7 @@ void ALGO2(DATASET dataset){
 }
 ```
 
-## Psuedo code pour la version définitive du projet :
+## Pseudo code pour la version définitive du projet :
 ```c
 void ALGO(DATASET dataset){
     
@@ -84,7 +84,7 @@ void ALGO(DATASET dataset){
 }
 ```
 
-## Psuedo code de la fonction de remplissage de structure DATASET :
+## Pseudo code de la fonction de remplissage de structure DATASET :
 ```c
 DATASET DATASORT(DATAS datas){
     Instantiation d un élément de type DATASET : dataset
