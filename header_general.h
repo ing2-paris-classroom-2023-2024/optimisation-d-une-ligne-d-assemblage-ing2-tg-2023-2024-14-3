@@ -87,6 +87,7 @@ struct TASK {
     struct TASK** E;    // Tableau des Exclusions
     int E_TOT;
     int TEMPS_TOT;
+    int MARQUEUR;
     int TEMOIN;
 };
 
@@ -110,7 +111,8 @@ typedef struct STATION{
 // **********  PROTOS   **********
 
 // Fonctions globales
-void DFS(DATASET dataset, TASK** selection, int nb_selection, TASK* tache, int TEMPS_PREC);  // Parcours DFS d'un element de station
+//void DFS(DATASET dataset, TASK** selection, int nb_selection, TASK* tache, int TEMPS_PREC);  // Parcours DFS d'un element de station
+void DFS(DATASET dataset, TASK** selection, int nb_selection, TASK* tache, int MARQUEUR_PREC);
 
 // Protos de Chargement de Données
 DATAS SCANDATAS(char* jeu_donnees);

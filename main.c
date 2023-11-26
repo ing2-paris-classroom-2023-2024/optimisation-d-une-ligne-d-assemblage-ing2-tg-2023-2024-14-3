@@ -2,7 +2,8 @@
 
 int main() {
     setbuf(stdout, 0);
-    char* jeu_donnees = "01";
+    char* jeu_donnees = "03";
+    scanf("%s", jeu_donnees);
     DATAS datas = SCANDATAS(jeu_donnees);
     //DISPDATAS(datas);
     DATASET dataset = DATASORT(datas);

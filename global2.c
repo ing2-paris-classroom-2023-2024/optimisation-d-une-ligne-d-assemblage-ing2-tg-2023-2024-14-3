@@ -1,6 +1,6 @@
 #include "header_general.h"
 
-void DFS(DATASET dataset, TASK** selection, int nb_selection, TASK* tache, int MARQUEUR_PREC){
+void DFS(DATASET dataset, TASK** selection, int nb_selection, TASK* tache, int TEMPS_PREC){
     /*
      *  PROCÉDURE DE PARCOURS DFS RÉCURSIF
      *  GRAPHE    : Variable contenant le graphe
@@ -15,7 +15,7 @@ void DFS(DATASET dataset, TASK** selection, int nb_selection, TASK* tache, int M
     //printf("%d, ", tache->BASEID);
 
     // Calcul temps
-    tache->MARQUEUR = (tache->MARQUEUR < MARQUEUR_PREC + 1) ? MARQUEUR_PREC + 1 : tache->MARQUEUR;
+    tache->TEMPS_TOT = (tache->TEMPS_TOT < TEMPS_PREC + tache->TEMPS_EXE) ? TEMPS_PREC + tache->TEMPS_EXE : tache->TEMPS_TOT;
 
     for(int i = 0; i < tache->S_TOT; i++){
         bool cond = 0;
@@ -23,7 +23,7 @@ void DFS(DATASET dataset, TASK** selection, int nb_selection, TASK* tache, int M
             if(selection[j]->BASEID == tache->S[i]->BASEID) cond = 1;
         }
         if(cond){
-            DFS(dataset, selection, nb_selection, tache->S[i], tache->MARQUEUR);
+            DFS(dataset, selection, nb_selection, tache->S[i], tache->TEMPS_TOT);
         }
     }
     tache->TEMOIN = 2;
@@ -71,6 +71,31 @@ void ALGO(DATASET dataset){
             printf("PRECEDENCE : \n");
             for(int u = 0; u < nb_selection; u++) printf("%d : (PTOT = %d)\n", selection[u]->BASEID, selection[u]->P_TOT);
 
+            printf("TEMPS : \n");
+            for(int i = 0; i < nb_selection; i++){
+                for(int j = 0; j < nb_selection; j++){
+                    selection[j]->TEMOIN = 0;
+                }
+                for(int j = 0; j < nb_selection; j++){
+                    selection[j]->TEMOIN = 0;
+                }
+                DFS(dataset, selection, nb_selection, selection[i], 0);
+            }
+            //for(int i = 0; i < nb_selection; i++) printf("\t%d : %d\n", selection[i]->BASEID, selection[i]->TEMPS_TOT);
+            for(int i = 0; i < nb_selection; i++){
+                if(selection[i]->TEMPS_TOT > dataset.T_CYCLE){
+                    selection[i]->USED = 0;
+                    for(int l = i; l < nb_selection-1; l++){
+                        selection[l] = selection[l+1];
+                    }
+                    selection = (TASK**) realloc (selection, (nb_selection-1)*sizeof(TASK*));
+                    nb_selection--;
+                }
+            }
+            for(int u = 0; u < nb_selection; u++) printf("%d : (TEMPS_TOT = %d < %d)\n", selection[u]->BASEID, selection[u]->TEMPS_TOT, dataset.T_CYCLE);
+            printf("\n");
+
+
             printf("EXCLUSION : \n");
             for (int i = 0; i < nb_selection; i++){
                 for(int j = 0; j < selection[i]->E_TOT; j++){
@@ -100,51 +125,13 @@ void ALGO(DATASET dataset){
                 }
             }
 
-            printf("TEMPS : \n");
-            for(int i = 0; i < nb_selection; i++){
-                selection[i]->MARQUEUR = 0;
-            }
-            for(int i = 0; i < nb_selection; i++){
-                for(int j = 0; j < nb_selection; j++){
-                    selection[j]->TEMOIN = 0;
-                }
-                DFS(dataset, selection, nb_selection, selection[i], 0);
-            }
-            //for(int i = 0; i < nb_selection; i++) printf("\t%d : %d\n", selection[i]->BASEID, selection[i]->TEMPS_TOT);
-            do{
-                for(int u = 0; u < nb_selection; u++) printf("%d : (MARQUEUR = %d, S_TOT =  %d)\n", selection[u]->BASEID, selection[u]->MARQUEUR, selection[u]->S_TOT);
-                stations[nb_stations].temps_tot = 0;
-                for(int i = 0; i < nb_selection; i++){
-                    stations[nb_stations].temps_tot += selection[i]->TEMPS_EXE;
-                }
-                if(stations[nb_stations].temps_tot > dataset.T_CYCLE){
-                    int indice = 0;
-                    for(int i = 0; i < nb_selection; i++){
-                        if(selection[indice]->MARQUEUR <= selection[i]->MARQUEUR){
-                            if(selection[indice]->MARQUEUR == selection[i]->MARQUEUR){
-                                indice = (selection[indice]->S_TOT < selection[i]->S_TOT) ? indice : i;
-                            }
-                            else{
-                                indice = i;
-                            }
-                        }
-                    }
-                    selection[indice]->USED = 0;
-                    for(int l = indice; l < nb_selection-1; l++){
-                        selection[l] = selection[l+1];
-                    }
-                    selection = (TASK**) realloc (selection, (nb_selection-1)*sizeof(TASK*));
-                    nb_selection--;
-                }
-            }while(stations[nb_stations].temps_tot > dataset.T_CYCLE);
-            printf("\n");
-
             printf("TEMOIN DE FIN (SELECTIONS = %d, OLD_SELECTIONS = %d)\n\n\n", nb_selection, comp_selection);
 
             //printf("%d : VAL=%d\n", nb_stations, nb_actions);
         }
         stations[nb_stations].selection = selection;
         stations[nb_stations].nb_selections = nb_selection;
+        for(int i = 0; i < nb_selection; i++) stations[nb_stations].temps_tot = (stations[nb_stations].temps_tot < selection[i]->TEMPS_TOT) ? selection[i]->TEMPS_TOT : stations[nb_stations].temps_tot;
 
         nb_stations++;
     }
@@ -152,7 +139,7 @@ void ALGO(DATASET dataset){
     for(int i = 0; i < nb_stations; i++){
         printf("STATION %d (Nombre d'actions a executer : %d  |  Temps total : %d ms) :\n", i+1, stations[i].nb_selections, stations[i].temps_tot);
         for(int j = 0; j < stations[i].nb_selections; j++){
-            printf("\tACTION %d :\tN. ACTION : %d (Duree : %d ms, Marqueur : %d)\n", j+1, stations[i].selection[j]->BASEID, stations[i].selection[j]->TEMPS_EXE, stations[i].selection[j]->MARQUEUR);
+            printf("\tACTION %d :\tN. ACTION : %d (Duree : %d ms, Temps : %d)\n", j+1, stations[i].selection[j]->BASEID, stations[i].selection[j]->TEMPS_EXE, stations[i].selection[j]->TEMPS_TOT);
         }
         printf("\n");
     }
