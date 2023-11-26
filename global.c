@@ -33,7 +33,7 @@ void ALGO(DATASET dataset){
 
     int nb_stations = 0;
     STATION* stations = (STATION*) malloc(nb_stations*sizeof(STATION));
-    stations->temps_tot = 0;
+    stations->TEMPS_TOT = 0;
 
     // Boucle Principale
     while(!FINTRAITEMENT(dataset)){
@@ -113,11 +113,11 @@ void ALGO(DATASET dataset){
             //for(int i = 0; i < nb_selection; i++) printf("\t%d : %d\n", selection[i]->BASEID, selection[i]->TEMPS_TOT);
             do{
                 for(int u = 0; u < nb_selection; u++) printf("%d : (MARQUEUR = %d, S_TOT =  %d)\n", selection[u]->BASEID, selection[u]->MARQUEUR, selection[u]->S_TOT);
-                stations[nb_stations].temps_tot = 0;
+                stations[nb_stations].TEMPS_TOT = 0;
                 for(int i = 0; i < nb_selection; i++){
-                    stations[nb_stations].temps_tot += selection[i]->TEMPS_EXE;
+                    stations[nb_stations].TEMPS_TOT += selection[i]->TEMPS_EXE;
                 }
-                if(stations[nb_stations].temps_tot > dataset.T_CYCLE){
+                if(stations[nb_stations].TEMPS_TOT > dataset.T_CYCLE){
                     int indice = 0;
                     for(int i = 0; i < nb_selection; i++){
                         if(selection[indice]->MARQUEUR <= selection[i]->MARQUEUR){
@@ -136,23 +136,23 @@ void ALGO(DATASET dataset){
                     selection = (TASK**) realloc (selection, (nb_selection-1)*sizeof(TASK*));
                     nb_selection--;
                 }
-            }while(stations[nb_stations].temps_tot > dataset.T_CYCLE);
+            }while(stations[nb_stations].TEMPS_TOT > dataset.T_CYCLE);
             printf("\n");
 
             printf("TEMOIN DE FIN (SELECTIONS = %d, OLD_SELECTIONS = %d)\n\n\n", nb_selection, comp_selection);
 
             //printf("%d : VAL=%d\n", nb_stations, nb_actions);
         }
-        stations[nb_stations].selection = selection;
-        stations[nb_stations].nb_selections = nb_selection;
+        stations[nb_stations].SELECTION = selection;
+        stations[nb_stations].NB_SELECTIONS = nb_selection;
 
         nb_stations++;
     }
 
     for(int i = 0; i < nb_stations; i++){
-        printf("STATION %d (Nombre d'actions a executer : %d  |  Temps total : %d ms) :\n", i+1, stations[i].nb_selections, stations[i].temps_tot);
-        for(int j = 0; j < stations[i].nb_selections; j++){
-            printf("\tACTION %d :\tN. ACTION : %d (Duree : %d ms, Marqueur : %d)\n", j+1, stations[i].selection[j]->BASEID, stations[i].selection[j]->TEMPS_EXE, stations[i].selection[j]->MARQUEUR);
+        printf("STATION %d (Nombre d'actions a executer : %d  |  Temps total : %d ms) :\n", i+1, stations[i].NB_SELECTIONS, stations[i].TEMPS_TOT);
+        for(int j = 0; j < stations[i].NB_SELECTIONS; j++){
+            printf("\tACTION %d :\tN. ACTION : %d (Duree : %d ms, Marqueur : %d)\n", j+1, stations[i].SELECTION[j]->BASEID, stations[i].SELECTION[j]->TEMPS_EXE, stations[i].SELECTION[j]->MARQUEUR);
         }
         printf("\n");
     }

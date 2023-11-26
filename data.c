@@ -32,6 +32,9 @@ DATAS SCANDATAS(char* jeu_donnees){
 }
 
 int** FILLDATAS(char* fname, int* tot, int cond){
+    //      -- FONCTION DE REMPLISSAGE DES DONNEES
+    //      JEU_DONNEES : Numéro du jeu de données
+    //      || RETURN :     Structure de valeurs
     FILE* fichier = fopen(fname, "rw+");
     *tot = 0;
     int** tab = (int**) malloc( sizeof(int*) );
