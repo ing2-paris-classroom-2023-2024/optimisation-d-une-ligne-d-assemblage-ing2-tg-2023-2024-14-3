@@ -115,7 +115,7 @@ typedef struct STATION{
 
 // Fonctions globales
 
-void DFS(DATASET dataset, TASK** selection, int nb_selection, TASK* tache, int MARQUEUR_PREC);
+//void DFS(DATASET dataset, TASK** selection, int nb_selection, TASK* tache, int MARQUEUR_PREC);
 // Procédure de parcours en DFS pour la séléction des tâches à effectuer.
 
 void ALGO(DATASET dataset); // Procédure générale du projet qui instancie et affiche les différentes stations.
