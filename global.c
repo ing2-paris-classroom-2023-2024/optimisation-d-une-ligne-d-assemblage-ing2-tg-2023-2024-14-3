@@ -167,7 +167,7 @@ void ALGO(DATASET dataset){
 
 }
 
-int FINTRAITEMENT(DATASET dataset){
-    for(int i = 0; i < dataset.TASK_TOT; i++) if(!dataset.TASKS[i].USED) return 0;
-    return 1;
+bool FINTRAITEMENT(DATASET dataset){
+    for(int i = 0; i < dataset.TASK_TOT; i++) if(!dataset.TASKS[i].USED) return false;
+    return true;
 }

@@ -1,6 +1,6 @@
 #include "header_general.h"
 
-void DFS(DATASET dataset, TASK** SELECTION, int nb_SELECTION, TASK* tache, int TEMPS_PREC){
+void DFS2(DATASET dataset, TASK** SELECTION, int nb_SELECTION, TASK* tache, int TEMPS_PREC){
     /*
      *  PROCÉDURE DE PARCOURS DFS RÉCURSIF
      *  GRAPHE    : Variable contenant le graphe
@@ -23,20 +23,20 @@ void DFS(DATASET dataset, TASK** SELECTION, int nb_SELECTION, TASK* tache, int T
             if(SELECTION[j]->BASEID == tache->S[i]->BASEID) cond = 1;
         }
         if(cond){
-            DFS(dataset, SELECTION, nb_SELECTION, tache->S[i], tache->TEMPS_TOT);
+            DFS2(dataset, SELECTION, nb_SELECTION, tache->S[i], tache->TEMPS_TOT);
         }
     }
     tache->TEMOIN = 2;
 }
 
-void ALGO(DATASET dataset){
+void ALGO2(DATASET dataset){
 
     int nb_stations = 0;
     STATION* stations = (STATION*) malloc(nb_stations*sizeof(STATION));
     stations->TEMPS_TOT = 0;
 
     // Boucle Principale
-    while(!FINTRAITEMENT(dataset)){
+    while(!FINTRAITEMENT2(dataset)){
         stations = (STATION*) realloc(stations, (nb_stations+1)*sizeof(STATION));
 
         // Boucle de répétition dans une station
@@ -79,7 +79,7 @@ void ALGO(DATASET dataset){
                 for(int j = 0; j < nb_SELECTION; j++){
                     SELECTION[j]->TEMOIN = 0;
                 }
-                DFS(dataset, SELECTION, nb_SELECTION, SELECTION[i], 0);
+                DFS2(dataset, SELECTION, nb_SELECTION, SELECTION[i], 0);
             }
             //for(int i = 0; i < nb_SELECTION; i++) printf("\t%d : %d\n", SELECTION[i]->BASEID, SELECTION[i]->TEMPS_TOT);
             for(int i = 0; i < nb_SELECTION; i++){
@@ -154,7 +154,7 @@ void ALGO(DATASET dataset){
 
 }
 
-int FINTRAITEMENT(DATASET dataset){
-    for(int i = 0; i < dataset.TASK_TOT; i++) if(!dataset.TASKS[i].USED) return 0;
-    return 1;
+bool FINTRAITEMENT2(DATASET dataset){
+    for(int i = 0; i < dataset.TASK_TOT; i++) if(!dataset.TASKS[i].USED) return false;
+    return true;
 }

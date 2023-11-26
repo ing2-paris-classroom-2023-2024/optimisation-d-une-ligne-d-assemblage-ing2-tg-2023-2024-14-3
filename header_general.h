@@ -82,11 +82,11 @@ struct TASK {
     int BASEID;
     int TEMPS_EXE;
     bool USED;
-    struct TASK** P;    // Tableau des Précédents
+    struct TASK** P;
     int P_TOT;
-    struct TASK** S;    // Tableau des Successeurs
+    struct TASK** S;
     int S_TOT;
-    struct TASK** E;    // Tableau des Exclusions
+    struct TASK** E;
     int E_TOT;
     int MARQUEUR;
     int TEMPS_TOT;
@@ -114,22 +114,38 @@ typedef struct STATION{
 // **********  PROTOS   **********
 
 // Fonctions globales
-//void DFS(DATASET dataset, TASK** selection, int nb_selection, TASK* tache, int TEMPS_PREC);  // Parcours DFS d'un element de station
+
 void DFS(DATASET dataset, TASK** selection, int nb_selection, TASK* tache, int MARQUEUR_PREC);
+// Procédure de parcours en DFS pour la séléction des tâches à effectuer.
+
+void ALGO(DATASET dataset); // Procédure générale du projet qui instancie et affiche les différentes stations.
+
+bool FINTRAITEMENT(DATASET dataset); // Fonction de libération mémoire des stations et de DATASET
+
 
 // Protos de Chargement de Données
-DATAS SCANDATAS(char* jeu_donnees);
-int** FILLDATAS(char* fname, int* tot, int cond);
-void DISPDATAS(DATAS datas);
-void FREEDATAS(DATAS datas);
+DATAS SCANDATAS(char* jeu_donnees); // Fonction lisant les données
+
+int** FILLDATAS(char* fname, int* tot, int cond); // Fonction remplissant les différents tableaux utiles pour DATA
+
+void DISPDATAS(DATAS datas); // Procédure temporaire d'affichage des éléments remplis
+
+void FREEDATAS(DATAS datas); // Procédure de libération de l'espace mémoire d'une instance de type DATA
+
 
 // Protos de l'Ordonnancement des Données
-DATASET DATASORT(DATAS datas);
-void DISPDATASET(DATASET dataset);
-void FREEDATASET(DATASET dataset);
+DATASET DATASORT(DATAS datas); // Remplissage De l'instance de DATASET à partir des informations de DATA
+void DISPDATASET(DATASET dataset); // Fonction d'affichage des infos présentes dans la structure DATASET
+void FREEDATASET(DATASET dataset); // Procédure de libération de l'espace mémoire d'une instance de type DATASET
 
-// Algorithme
-void ALGO(DATASET dataset);
-int FINTRAITEMENT(DATASET dataset);
+
+// Version alternative des codes :
+void DFS2(DATASET dataset, TASK** SELECTION, int nb_SELECTION, TASK* tache, int TEMPS_PREC);
+// Procédure de recherche par DFS alternative servant pour une autre interprétation du code.
+
+void ALGO2(DATASET dataset); // Procédure de fonctionnement alternatif du projet.
+
+bool FINTRAITEMENT2(DATASET dataset);
+// Fonction de léibération de mémoire pour le fonctionnement alternatif du programme.
 
 #endif

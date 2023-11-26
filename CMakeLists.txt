@@ -8,4 +8,5 @@ add_executable(2023S1_ECELECAR
     data.c
     header_general.h
     global.c
+    global2.c
 )
