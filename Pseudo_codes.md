@@ -114,3 +114,91 @@ DATASET DATASORT(DATAS datas){
     Rempli_exclu
 }
 ```
+
+```c
+
+typedef struct DATAS {
+    
+    int TCYCLE;          
+
+    int** EXCLUSIONS;    
+    int EXCLUSIONS_TOT;  
+
+    int** PRECEDENCES;   
+    int PRECEDENCES_TOT; 
+
+    int** OPERATIONS ;   
+    int OPERATIONS_TOT;  
+    
+} DATAS;
+
+typedef struct TASK TASK;
+
+typedef struct DATASET {
+    
+    int T_CYCLE;
+    int TASK_TOT;
+    TASK* TASKS;
+
+} DATASET;
+
+struct TASK {
+    
+    int BASEID;
+    int TEMPS_EXE;
+    bool USED;
+    struct TASK** P;
+    int P_TOT;
+    struct TASK** S;
+    int S_TOT;
+    struct TASK** E;
+    int E_TOT;
+    int MARQUEUR;
+    int TEMPS_TOT;
+    int TEMOIN;
+};
+
+typedef struct STATION{
+
+    int TEMPS_TOT;
+    int NB_SELECTIONS;
+    struct TASK** SELECTION;
+
+}STATION;
+
+// **********  PROTOTYPES   **********
+
+// Fonctions globales
+
+void DFS(DATASET dataset, TASK** selection, int nb_selection, TASK* tache, int MARQUEUR_PREC);
+
+void ALGO(DATASET dataset); 
+
+bool FINTRAITEMENT(DATASET dataset); 
+
+// Protos de Chargement de Données
+DATAS SCANDATAS(char* jeu_donnees); 
+
+int** FILLDATAS(char* fname, int* tot, int cond); 
+
+void DISPDATAS(DATAS datas); 
+
+void FREEDATAS(DATAS datas); 
+
+
+// Protos de l'Ordonnancement des Données
+DATASET DATASORT(DATAS datas); 
+
+void DISPDATASET(DATASET dataset); 
+
+void FREEDATASET(DATASET dataset); 
+
+
+// Version alternative des codes :
+void DFS2(DATASET dataset, TASK** SELECTION, int nb_SELECTION, TASK* tache, int TEMPS_PREC);
+
+void ALGO2(DATASET dataset); 
+
+bool FINTRAITEMENT2(DATASET dataset);
+
+```
