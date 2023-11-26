@@ -163,7 +163,7 @@ void ALGO(DATASET dataset){
     //clrscr();
     setbuf(stdout, 0);
     printf("NB. STATIONS : %d\n", nb_stations);
-    scanf("%d", &std);
+    //scanf("%d", &std);
 
 }
 
