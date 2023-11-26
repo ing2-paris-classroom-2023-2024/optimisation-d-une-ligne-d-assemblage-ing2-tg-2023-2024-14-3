@@ -141,7 +141,7 @@ void ALGO(DATASET dataset){
 
             printf("TEMOIN DE FIN (SELECTIONS = %d, OLD_SELECTIONS = %d)\n\n\n", nb_selection, comp_selection);
 
-            //printf("%d : VAL=%d\n", nb_stations, nb_actions);
+            printf("%d : VAL=%d\n", nb_stations, nb_selection);
         }
         stations[nb_stations].SELECTION = selection;
         stations[nb_stations].NB_SELECTIONS = nb_selection;
