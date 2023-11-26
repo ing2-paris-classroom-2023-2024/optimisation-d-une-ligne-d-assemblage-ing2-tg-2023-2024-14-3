@@ -76,9 +76,6 @@ void ALGO2(DATASET dataset){
                 for(int j = 0; j < nb_SELECTION; j++){
                     SELECTION[j]->TEMOIN = 0;
                 }
-                for(int j = 0; j < nb_SELECTION; j++){
-                    SELECTION[j]->TEMOIN = 0;
-                }
                 DFS2(dataset, SELECTION, nb_SELECTION, SELECTION[i], 0);
             }
             //for(int i = 0; i < nb_SELECTION; i++) printf("\t%d : %d\n", SELECTION[i]->BASEID, SELECTION[i]->TEMPS_TOT);
