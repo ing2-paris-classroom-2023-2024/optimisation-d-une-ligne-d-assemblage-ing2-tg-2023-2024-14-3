@@ -5,7 +5,7 @@ int main() {
     char* jeu_donnees = "03";
     DATAS datas = SCANDATAS(jeu_donnees);
 
-    DISPDATAS(datas);
+    //DISPDATAS(datas);
 
     DATASET dataset = DATASORT(datas);
     DISPDATASET(dataset);
