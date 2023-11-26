@@ -74,6 +74,8 @@ struct TASK {
      *
      * E_TOT (entier | int) : Nombre de relations d'exclusions avec cette tâche
      *
+     * MARQUEUR (entier | int) : Témoigne du niveau d'importance de la tâche au sein de la station.
+     *
      * TEMOIN (entier | int) : Argument de colorisation dans le parcours DFS utilisé.
      */
 
@@ -86,9 +88,10 @@ struct TASK {
     int S_TOT;
     struct TASK** E;    // Tableau des Exclusions
     int E_TOT;
-    int TEMPS_TOT;
     int MARQUEUR;
+    int TEMPS_TOT;
     int TEMOIN;
+
 };
 
 typedef struct STATION{
