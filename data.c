@@ -10,11 +10,11 @@ DATAS SCANDATAS(char* jeu_donnees){
     char* temp = (char*) malloc( 50*sizeof(char) );
     DATAS datas;
 
-    printf("SCAN1\n");
+    //printf("SCAN1\n");
     sprintf(temp, "../fichiers_ressources/%s/exclusions.txt", jeu_donnees);
     datas.EXCLUSIONS = FILLDATAS(temp, &(datas.EXCLUSIONS_TOT), 0);
 
-    printf("SCAN2\n");
+    //printf("SCAN2\n");
     sprintf(temp, "../fichiers_ressources/%s/precedences.txt", jeu_donnees);
     datas.PRECEDENCES = FILLDATAS(temp, &(datas.PRECEDENCES_TOT), 0);
 
@@ -49,7 +49,7 @@ int** FILLDATAS(char* fname, int* tot, int cond){
         else{
             fscanf(fichier, "%d %d\n", &(tab[*tot][0]), &(tab[*tot][1]));
         }
-        printf("VAL :\t%d\t%d\n", tab[*tot][0], tab[*tot][1]);
+        //printf("VAL :\t%d\t%d\n", tab[*tot][0], tab[*tot][1]);
         (*tot)++;
     }
     fclose(fichier);
@@ -130,7 +130,7 @@ DATASET DATASORT(DATAS datas){
         LIGNE[1]->P = (TASK**) realloc(LIGNE[1]->P, (LIGNE[1]->P_TOT+1)*sizeof(TASK*));
         LIGNE[1]->P[LIGNE[1]->P_TOT] = LIGNE[0];
         LIGNE[1]->P_TOT++;
-        //printf("TACHE %d :\tAntecedent -> %d \t(PTOT %d)\n", LIGNE[1]->BASEID, LIGNE[1]->P[LIGNE[1]->P_TOT-1]->BASEID, LIGNE[1]->P_TOT);
+        printf("TACHE %d :\tAntecedent -> %d \t(PTOT %d)\n", LIGNE[1]->BASEID, LIGNE[1]->P[LIGNE[1]->P_TOT-1]->BASEID, LIGNE[1]->P_TOT);
     }
 
     // Ajout des successeurs
