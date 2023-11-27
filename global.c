@@ -12,7 +12,7 @@ void DFS(DATASET dataset, TASK** selection, int nb_selection, TASK* tache, int M
     tache->TEMOIN = 1;
 
     // Affichage du chemin
-    printf("%d, ", tache->BASEID);
+    //printf("%d, ", tache->BASEID);
 
     // Calcul temps
     tache->MARQUEUR = (tache->MARQUEUR < MARQUEUR_PREC + 1) ? MARQUEUR_PREC + 1 : tache->MARQUEUR;
