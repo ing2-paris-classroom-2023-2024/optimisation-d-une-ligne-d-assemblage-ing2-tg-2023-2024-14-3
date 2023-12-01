@@ -88,7 +88,7 @@ void ALGO(DATASET dataset){
             for (int i = 0; i < nb_selection; i++){
                 for(int j = 0; j < selection[i]->E_TOT; j++){
                     for(int k = i+1; k < nb_selection; k++){
-                        //printf("\tTRY : POUR (%d) %d on compare (%d) %d   et   (%d) %d\n", i, selection[i]->BASEID, j, selection[i]->E[j]->BASEID, k, selection[k]->BASEID);
+                        printf("\tTRY : POUR (%d) %d on compare (%d) %d   et   (%d) %d\n", i, selection[i]->BASEID, j, selection[i]->E[j]->BASEID, k, selection[k]->BASEID);
 
                         // Si les tâches correspondent
                         if(selection[i]->E[j]->BASEID == selection[k]->BASEID){
@@ -96,7 +96,7 @@ void ALGO(DATASET dataset){
 
                             // Boucle de vérification des exclusions de la tâche
                             for(int l = 0; l < selection[indice]->S_TOT; l++){
-                                //printf("\tPARCOURS (%d) : succ. %d -> USED-%d\n", selection[indice]->BASEID, selection[indice]->S[l]->BASEID, selection[indice]->S[l]->USED);
+                                printf("\tPARCOURS (%d) : succ. %d -> USED-%d\n", selection[indice]->BASEID, selection[indice]->S[l]->BASEID, selection[indice]->S[l]->USED);
                                 if(selection[indice]->S[l]->USED == 1){
                                     printf("BREAK : ANN. SUPPR. de %d (%d utilise)\n", selection[indice]->BASEID, selection[indice]->S[l]->BASEID);
                                     indice = (selection[i]->E[j]->S_TOT >= selection[k]->S_TOT) ? i : k;
