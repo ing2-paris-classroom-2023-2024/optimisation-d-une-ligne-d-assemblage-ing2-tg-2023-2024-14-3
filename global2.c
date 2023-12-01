@@ -132,14 +132,7 @@ void ALGO2(DATASET dataset){
 
         nb_stations++;
     }
-
-    for(int i = 0; i < nb_stations; i++){
-        printf("STATION %d (Nombre d'actions a executer : %d  |  Temps total : %d ms) :\n", i+1, stations[i].NB_SELECTIONS, stations[i].TEMPS_TOT);
-        for(int j = 0; j < stations[i].NB_SELECTIONS; j++){
-            printf("\tACTION %d :\tN. ACTION : %d (Duree : %d ms, Temps : %d)\n", j+1, stations[i].SELECTION[j]->BASEID, stations[i].SELECTION[j]->TEMPS_EXE, stations[i].SELECTION[j]->TEMPS_TOT);
-        }
-        printf("\n");
-    }
+    AFFICHE_STAT(stations,nb_stations);
 
     int std = 1;
     //system("cls");

@@ -174,14 +174,7 @@ void ALGO(DATASET dataset){
 
         nb_stations++;// Incrémentation du nombre de stations
     }
-
-    for(int i = 0; i < nb_stations; i++){
-        printf("STATION %d (Nombre d'actions a executer : %d  |  Temps total : %d ms) :\n", i+1, stations[i].NB_SELECTIONS, stations[i].TEMPS_TOT);
-        for(int j = 0; j < stations[i].NB_SELECTIONS; j++){
-            printf("\tACTION %d :\tN. ACTION : %d (Duree : %d ms, Marqueur : %d)\n", j+1, stations[i].SELECTION[j]->BASEID, stations[i].SELECTION[j]->TEMPS_EXE, stations[i].SELECTION[j]->MARQUEUR);
-        }
-        printf("\n");
-    }
+    AFFICHE_STAT(stations,nb_stations);
 
     int std = 1;
     //system("cls");
@@ -196,4 +189,17 @@ void ALGO(DATASET dataset){
 bool FINTRAITEMENT(DATASET dataset){
     for(int i = 0; i < dataset.TASK_TOT; i++) if(!dataset.TASKS[i].USED) return false;
     return true;
+}
+
+void AFFICHE_STAT(STATION* inst,int nb_stat){
+    for(int i = 0; i < nb_stat; i++){
+        printf("STATION %d (Nombre d'actions a executer : %d  |  Temps total : %d ms) :\n", i+1,
+               inst[i].NB_SELECTIONS, inst[i].TEMPS_TOT);
+        for(int j = 0; j < inst[i].NB_SELECTIONS; j++){
+            printf("\tACTION %d :\tN. ACTION : %d (Duree : %d ms, Marqueur : %d)\n", j+1,
+                   inst[i].SELECTION[j]->BASEID, inst[i].SELECTION[j]->TEMPS_EXE,
+                   inst[i].SELECTION[j]->MARQUEUR);
+        }
+        printf("\n");
+    }
 }

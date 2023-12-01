@@ -126,6 +126,8 @@ void ALGO(DATASET dataset); // Procédure générale du projet qui instancie et 
 
 bool FINTRAITEMENT(DATASET dataset); // Fonction de libération mémoire des stations et de DATASET
 
+void AFFICHE_STAT(STATION* inst,int nb_stat); // Procédure d'affichage des infos de la station
+
 // Protos de Chargement de Données
 
 DATAS SCANDATAS(char* jeu_donnees); // Fonction lisant les données
