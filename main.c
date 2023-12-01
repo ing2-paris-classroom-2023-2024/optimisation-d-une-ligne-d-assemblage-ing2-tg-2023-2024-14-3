@@ -2,7 +2,7 @@
 
 int main() {
     setbuf(stdout, 0);
-    char* jeu_donnees = "03";
+    char* jeu_donnees = "01";
     DATAS datas = SCANDATAS(jeu_donnees);
 
     //DISPDATAS(datas);

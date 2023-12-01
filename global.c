@@ -115,7 +115,6 @@ void ALGO(DATASET dataset){
                             printf("\n");
                         }
                     }
-
                 }
             }
             // Gestion du temps en rapport avec le temps de cycle
@@ -127,45 +126,53 @@ void ALGO(DATASET dataset){
                 for(int j = 0; j < nb_selection; j++){
                     selection[j]->TEMOIN = 0;
                 }
+                // Appel de la fonction DFS pour
                 DFS(dataset, selection, nb_selection, selection[i], 0);
             }
             //for(int i = 0; i < nb_selection; i++) printf("\t%d : %d\n", selection[i]->BASEID, selection[i]->TEMPS_TOT);
             do{
                 for(int u = 0; u < nb_selection; u++) printf("%d : (MARQUEUR = %d, S_TOT =  %d)\n", selection[u]->BASEID, selection[u]->MARQUEUR, selection[u]->S_TOT);
                 stations[nb_stations].TEMPS_TOT = 0;
+
+                // Addition des temps des actions de la liste de tâches
                 for(int i = 0; i < nb_selection; i++){
                     stations[nb_stations].TEMPS_TOT += selection[i]->TEMPS_EXE;
                 }
+                // Si la somme est plus importante que le temps de cycle
                 if(stations[nb_stations].TEMPS_TOT > dataset.T_CYCLE){
                     int indice = 0;
+
+                    // Boucle de recherche de l'indice de la tâche à enlever
                     for(int i = 0; i < nb_selection; i++){
-                        if(selection[indice]->MARQUEUR <= selection[i]->MARQUEUR){
-                            if(selection[indice]->MARQUEUR == selection[i]->MARQUEUR){
-                                indice = (selection[indice]->S_TOT < selection[i]->S_TOT) ? indice : i;
-                            }
-                            else{
-                                indice = i;
-                            }
+                        if(selection[indice]->MARQUEUR == selection[i]->MARQUEUR) {
+                            indice = (selection[indice]->S_TOT < selection[i]->S_TOT) ? indice : i;
+                        }
+                        else if(selection[indice]->MARQUEUR < selection[i]->MARQUEUR) {
+                            indice = i;
                         }
                     }
                     selection[indice]->USED = 0;
+
+                    // Décalage des informations
                     for(int l = indice; l < nb_selection-1; l++){
                         selection[l] = selection[l+1];
                     }
+                    // Réduction du tableau
                     selection = (TASK**) realloc (selection, (nb_selection-1)*sizeof(TASK*));
                     nb_selection--;
                 }
             }while(stations[nb_stations].TEMPS_TOT > dataset.T_CYCLE);
             printf("\n");
-
+            //Fin de la recherche des incompatibilitées
             printf("TEMOIN DE FIN (SELECTIONS = %d, OLD_SELECTIONS = %d)\n\n\n", nb_selection, comp_selection);
 
             //printf("%d : VAL=%d\n", nb_stations, nb_selection);
         }
+        //Assignation de la sélection de tâche et MAJ du nombre de tâches dans la station
         stations[nb_stations].SELECTION = selection;
         stations[nb_stations].NB_SELECTIONS = nb_selection;
 
-        nb_stations++;
+        nb_stations++;// Incrémentation du nombre de stations
     }
 
     for(int i = 0; i < nb_stations; i++){
