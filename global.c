@@ -31,8 +31,12 @@ void DFS(DATASET dataset, TASK** selection, int nb_selection, TASK* tache, int M
 
 void ALGO(DATASET dataset){
     /*
-     * Algorithme principal de ce projet
-     * */
+     * Procédure principale de ce projet
+     * Gère et affiche les stations et les tâches associées
+     * DATASET dataset : Structure du jeu de données triées et organisées
+     */
+
+    // Création du tableau de STATIONS et initialisation des paramètres
     int nb_stations = 0;
     STATION* stations = (STATION*) malloc(nb_stations*sizeof(STATION));
     stations->TEMPS_TOT = 0;
@@ -44,21 +48,25 @@ void ALGO(DATASET dataset){
         // Boucle de répétition dans une station
         int comp_selection = 1;
         int nb_selection = 0;
+
+        // Création du tableau des tâches de la station
         TASK** selection = (TASK**) malloc(nb_selection*sizeof(TASK*));
 
+        //Boucle de parcours du dataset
         while(comp_selection - nb_selection){
             comp_selection = nb_selection;
 
             // Détecteur de sommet valide en fonction des PRECEDENCES
             for(int i = 0; i < dataset.TASK_TOT; i++){
-                // Si tous les prédécesseurs sont valides alors valider la tache
                 bool cond = 1;
+                // Si tous les prédécesseurs sont valides alors valider la tache
                 for(int j = 0; j < dataset.TASKS[i].P_TOT; j++){
                     if(dataset.TASKS[i].P[j]->USED == 0){
                         cond = 0;
                         break;
                     }
                 }
+                // Si une tâche a été choisie, on l'ajoute au tableau de la station
                 if(cond && !dataset.TASKS[i].USED){
                     selection = (TASK**) realloc(selection, (nb_selection+1)*sizeof(TASK*));
                     selection[nb_selection] = &(dataset.TASKS[i]);
@@ -66,20 +74,27 @@ void ALGO(DATASET dataset){
                     nb_selection++;
                 }
             }
+            // Boucle de désactivation du choix des tâches présentes dans la station
             for(int i = 0; i < nb_selection; i++){
                 selection[i]->USED = 1;
             }
-
+            // Boucle d'affichage des précédences
             printf("PRECEDENCE : \n");
             for(int u = 0; u < nb_selection; u++) printf("%d : (PTOT = %d)\n", selection[u]->BASEID, selection[u]->P_TOT);
 
+            // Boucle d'affichage et de vérification des exclusions
             printf("EXCLUSION : \n");
+            // On parcourt le tableau dataset et celui de la station pour trouver les correspondances
             for (int i = 0; i < nb_selection; i++){
                 for(int j = 0; j < selection[i]->E_TOT; j++){
                     for(int k = i+1; k < nb_selection; k++){
                         //printf("\tTRY : POUR (%d) %d on compare (%d) %d   et   (%d) %d\n", i, selection[i]->BASEID, j, selection[i]->E[j]->BASEID, k, selection[k]->BASEID);
+
+                        // Si les tâches correspondent
                         if(selection[i]->E[j]->BASEID == selection[k]->BASEID){
                             int indice = (selection[i]->E[j]->S_TOT >= selection[k]->S_TOT) ? k : i;
+
+                            // Boucle de vérification des exclusions de la tâche
                             for(int l = 0; l < selection[indice]->S_TOT; l++){
                                 //printf("\tPARCOURS (%d) : succ. %d -> USED-%d\n", selection[indice]->BASEID, selection[indice]->S[l]->BASEID, selection[indice]->S[l]->USED);
                                 if(selection[indice]->S[l]->USED == 1){
@@ -89,9 +104,11 @@ void ALGO(DATASET dataset){
                                 }
                             }
                             selection[indice]->USED = 0;
+                            // Boucle de déplacement des valeurs au sein du tableau
                             for(int l = indice; l < nb_selection-1; l++){
                                 selection[l] = selection[l+1];
                             }
+                            // Suppression de la tâche qui venait d'être ajoutée
                             selection = (TASK**) realloc (selection, (nb_selection-1)*sizeof(TASK*));
                             nb_selection--;
                             for(int u = 0; u < nb_selection; u++) printf("%d : (PTOT = %d)\n", selection[u]->BASEID, selection[u]->P_TOT);
@@ -101,7 +118,7 @@ void ALGO(DATASET dataset){
 
                 }
             }
-
+            // Gestion du temps en rapport avec le temps de cycle
             printf("TEMPS : \n");
             for(int i = 0; i < nb_selection; i++){
                 selection[i]->MARQUEUR = 0;
