@@ -176,22 +176,27 @@ void ALGO(DATASET dataset){
     }
     AFFICHE_STAT(stations,nb_stations);
 
-    int std = 1;
-    //system("cls");
-    //printf("\e[1;1H\e[2J");
-    //clrscr();
+    // Fin du sous programme principal
     setbuf(stdout, 0);
     printf("NB. STATIONS : %d\n", nb_stations);
-    //scanf("%d", &std);
-
 }
 
 bool FINTRAITEMENT(DATASET dataset){
+    /*
+     * Fonction qui test s'il reste des tâches à traiter
+     * DATASET dataset : Jeu de donnée ordonné et trié
+     * Renvoie un booléen pour continuer le sous-programme principal
+     */
     for(int i = 0; i < dataset.TASK_TOT; i++) if(!dataset.TASKS[i].USED) return false;
     return true;
 }
 
 void AFFICHE_STAT(STATION* inst,int nb_stat){
+    /*
+     * Procédure d'affichage des informations des stations
+     * STATION* inst : Tableau d'instance de STATION
+     * nb_stat : numéro de station présent dans l'usine
+     */
     for(int i = 0; i < nb_stat; i++){
         printf("STATION %d (Nombre d'actions a executer : %d  |  Temps total : %d ms) :\n", i+1,
                inst[i].NB_SELECTIONS, inst[i].TEMPS_TOT);
