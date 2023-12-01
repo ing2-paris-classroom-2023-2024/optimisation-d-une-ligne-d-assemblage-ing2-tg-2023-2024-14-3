@@ -2,11 +2,11 @@
 #define ECELECAR_HEADER_GENERAL_H
 
 // Espace des Bibliothèques :
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdbool.h>
-#include <limits.h>
+#include <stdio.h> // Gestion de la console et des entrées utilisateurs
+#include <stdlib.h> // Gestions des fonctions de base du C
+#include <string.h> // Gestion des chaines de caractères
+#include <stdbool.h> // Gestion du type booléen
+#include <limits.h> // Gestions des limites et bordures de fichiers et de valeurs
 
 // **********  MACROS   **********
 
@@ -33,7 +33,7 @@ typedef struct DATAS {
     int OPERATIONS_TOT;  // Nombre total d'opérations
 } DATAS;
 
-typedef struct TASK TASK;
+typedef struct TASK TASK; // Alias pour la structure TASK déclarée plus bas
 
 typedef struct DATASET {
     /*
@@ -82,16 +82,20 @@ struct TASK {
     int BASEID;
     int TEMPS_EXE;
     bool USED;
+
+    // Section précédences
     struct TASK** P;
     int P_TOT;
+    // Section successeurs
     struct TASK** S;
     int S_TOT;
+    // Section exclusions
     struct TASK** E;
     int E_TOT;
+
     int MARQUEUR;
     int TEMPS_TOT;
     int TEMOIN;
-
 };
 
 typedef struct STATION{
@@ -122,8 +126,8 @@ void ALGO(DATASET dataset); // Procédure générale du projet qui instancie et 
 
 bool FINTRAITEMENT(DATASET dataset); // Fonction de libération mémoire des stations et de DATASET
 
-
 // Protos de Chargement de Données
+
 DATAS SCANDATAS(char* jeu_donnees); // Fonction lisant les données
 
 int** FILLDATAS(char* fname, int* tot, int cond); // Fonction remplissant les différents tableaux utiles pour DATA
@@ -132,14 +136,14 @@ void DISPDATAS(DATAS datas); // Procédure temporaire d'affichage des éléments
 
 void FREEDATAS(DATAS datas); // Procédure de libération de l'espace mémoire d'une instance de type DATA
 
-
 // Protos de l'Ordonnancement des Données
+
 DATASET DATASORT(DATAS datas); // Remplissage De l'instance de DATASET à partir des informations de DATA
 void DISPDATASET(DATASET dataset); // Fonction d'affichage des infos présentes dans la structure DATASET
 void FREEDATASET(DATASET dataset); // Procédure de libération de l'espace mémoire d'une instance de type DATASET
 
-
 // Version alternative des codes :
+
 void DFS2(DATASET dataset, TASK** SELECTION, int nb_SELECTION, TASK* tache, int TEMPS_PREC);
 // Procédure de recherche par DFS alternative servant pour une autre interprétation du code.
 

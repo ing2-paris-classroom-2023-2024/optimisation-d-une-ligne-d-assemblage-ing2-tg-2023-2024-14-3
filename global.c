@@ -30,7 +30,9 @@ void DFS(DATASET dataset, TASK** selection, int nb_selection, TASK* tache, int M
 }
 
 void ALGO(DATASET dataset){
-
+    /*
+     * Algorithme principal de ce projet
+     * */
     int nb_stations = 0;
     STATION* stations = (STATION*) malloc(nb_stations*sizeof(STATION));
     stations->TEMPS_TOT = 0;
