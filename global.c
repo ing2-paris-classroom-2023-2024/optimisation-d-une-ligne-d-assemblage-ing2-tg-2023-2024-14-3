@@ -129,7 +129,7 @@ void ALGO(DATASET dataset){
                 // Appel de la fonction DFS pour
                 DFS(dataset, selection, nb_selection, selection[i], 0);
             }
-            for(int i = 0; i < nb_selection; i++) printf("\t%d : %d\n", selection[i]->BASEID, selection[i]->TEMPS_TOT);
+            //for(int i = 0; i < nb_selection; i++) printf("\t%d : %d\n", selection[i]->BASEID, selection[i]->TEMPS_TOT);
             do{
                 for(int u = 0; u < nb_selection; u++) printf("%d : (MARQUEUR = %d, S_TOT =  %d)\n", selection[u]->BASEID, selection[u]->MARQUEUR, selection[u]->S_TOT);
                 stations[nb_stations].TEMPS_TOT = 0;
@@ -166,7 +166,7 @@ void ALGO(DATASET dataset){
             //Fin de la recherche des incompatibilitées
             printf("TEMOIN DE FIN (SELECTIONS = %d, OLD_SELECTIONS = %d)\n\n\n", nb_selection, comp_selection);
 
-            printf("%d : VAL=%d\n", nb_stations, nb_selection);
+            //printf("%d : VAL=%d\n", nb_stations, nb_selection);
         }
         //Assignation de la sélection de tâche et MAJ du nombre de tâches dans la station
         stations[nb_stations].SELECTION = selection;
