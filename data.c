@@ -171,11 +171,11 @@ DATASET DATASORT(DATAS datas){
         LIGNE[0]->E = (TASK**) realloc(LIGNE[0]->E, (LIGNE[0]->E_TOT+1)*sizeof(TASK*));
         LIGNE[0]->E[LIGNE[0]->E_TOT] = LIGNE[1];
         LIGNE[0]->E_TOT++;
-        printf("TACHE %d :\tExclut -> %d \t(ETOT %d)\n", LIGNE[0]->BASEID, LIGNE[0]->E[LIGNE[0]->E_TOT-1]->BASEID, LIGNE[0]->E_TOT);
+        //printf("TACHE %d :\tExclut -> %d \t(ETOT %d)\n", LIGNE[0]->BASEID, LIGNE[0]->E[LIGNE[0]->E_TOT-1]->BASEID, LIGNE[0]->E_TOT);
         LIGNE[1]->E = (TASK**) realloc(LIGNE[1]->E, (LIGNE[1]->E_TOT+1)*sizeof(TASK*));
         LIGNE[1]->E[LIGNE[1]->E_TOT] = LIGNE[0];
         LIGNE[1]->E_TOT++;
-        printf("TACHE %d :\tExclut -> %d \t(ETOT %d)\n", LIGNE[1]->BASEID, LIGNE[1]->E[LIGNE[1]->E_TOT-1]->BASEID, LIGNE[1]->E_TOT);
+        //printf("TACHE %d :\tExclut -> %d \t(ETOT %d)\n", LIGNE[1]->BASEID, LIGNE[1]->E[LIGNE[1]->E_TOT-1]->BASEID, LIGNE[1]->E_TOT);
     }
 
     for(int i = 0; i < dataset.TASK_TOT; i++){
@@ -202,7 +202,7 @@ int DFS_SUIVANTS_MAX(DATASET dataset, TASK* tache){
     int result = 0;
 
     // Affichage du chemin
-    //printf("%d, ", tache->BASEID);
+    printf("%d, ", tache->BASEID);
 
     for(int i = 0; i < tache->S_TOT; i++){
         result += DFS_SUIVANTS_MAX(dataset, tache->S[i]);
