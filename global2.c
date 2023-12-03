@@ -153,6 +153,7 @@ void ALGO2(DATASET dataset){
 
         nb_stations++;
     }
+    // Affichage des informations de chaque station
     AFFICHE_STAT(stations,nb_stations);
 
     int std = 1;
@@ -166,6 +167,12 @@ void ALGO2(DATASET dataset){
 }
 
 bool FINTRAITEMENT2(DATASET dataset){
+    /*
+     * Fonction qui test s'il reste des tâches à traiter
+     * DATASET dataset : Jeu de donnée ordonné et trié
+     * Renvoie un booléen pour continuer le sous-programme principal
+     * Fonction alternative de celle utilisée dans le SSP principal
+     */
     for(int i = 0; i < dataset.TASK_TOT; i++) if(!dataset.TASKS[i].USED) return false;
     return true;
 }
