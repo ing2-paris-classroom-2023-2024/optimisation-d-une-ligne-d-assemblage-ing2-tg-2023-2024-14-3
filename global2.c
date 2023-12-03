@@ -76,18 +76,23 @@ void ALGO2(DATASET dataset){
             for(int i = 0; i < nb_SELECTION; i++){
                 SELECTION[i]->USED = 1;
             }
-
+            // Boucle d'affichage des précédences
             printf("PRECEDENCE : \n");
             for(int u = 0; u < nb_SELECTION; u++) printf("%d : (PTOT = %d)\n", SELECTION[u]->BASEID, SELECTION[u]->P_TOT);
 
+            // Boucle d'affichage du temps au sein de la station
             printf("TEMPS : \n");
             for(int i = 0; i < nb_SELECTION; i++){
                 for(int j = 0; j < nb_SELECTION; j++){
                     SELECTION[j]->TEMOIN = 0;
                 }
+                // Le parcours en DFS sert ici à connaitre le temps des actions qui en découleront
                 DFS2(dataset, SELECTION, nb_SELECTION, SELECTION[i], 0);
             }
             //for(int i = 0; i < nb_SELECTION; i++) printf("\t%d : %d\n", SELECTION[i]->BASEID, SELECTION[i]->TEMPS_TOT);
+            // La séléction des tâches se fait pas rapport au temps
+
+            // Si une action a déjà été réalisée la retirer de la liste des tâches
             for(int i = 0; i < nb_SELECTION; i++){
                 if(SELECTION[i]->TEMPS_TOT > dataset.T_CYCLE){
                     SELECTION[i]->USED = 0;
