@@ -1,6 +1,6 @@
 #include "header_general.h"
 
-void DFS(DATASET dataset, TASK** selection, int nb_selection, TASK* tache, int MARQUEUR_PREC){
+void DFS_Temps(DATASET dataset, TASK** selection, int nb_selection, TASK* tache, int MARQUEUR_PREC){
     /*
      *  PROCÉDURE DE PARCOURS DFS RÉCURSIF
      *  GRAPHE    : Variable contenant le graphe
@@ -23,10 +23,33 @@ void DFS(DATASET dataset, TASK** selection, int nb_selection, TASK* tache, int M
             if(selection[j]->BASEID == tache->S[i]->BASEID) cond = 1;
         }
         if(cond){
-            DFS(dataset, selection, nb_selection, tache->S[i], tache->MARQUEUR);
+            DFS_Temps(dataset, selection, nb_selection, tache->S[i], tache->MARQUEUR);
         }
     }
     tache->TEMOIN = 2;
+}
+
+int DFS_Exclusions(DATASET dataset, TASK* tache){
+    /*
+     *  PROCÉDURE DE PARCOURS DFS RÉCURSIF
+     *  GRAPHE    : Variable contenant le graphe
+     *  MAILLON   : Variable du maillon dans lequel la recherche va être faite
+     */
+
+    // Vérification de la couleur pour la suite du parcours
+    if(tache->TEMOIN){return 0;}
+    tache->TEMOIN = 1;
+
+    int result = 0;
+
+    // Affichage du chemin
+    //printf("%d, ", tache->BASEID);
+
+    for(int i = 0; i < tache->S_TOT; i++){
+        result += DFS_Exclusions(dataset, tache->S[i]);
+    }
+    tache->TEMOIN = 2;
+    return result + 1;
 }
 
 void ALGO(DATASET dataset){
@@ -81,6 +104,7 @@ void ALGO(DATASET dataset){
             // Boucle d'affichage des précédences
             printf("PRECEDENCE : \n");
             for(int u = 0; u < nb_selection; u++) printf("%d : (PTOT = %d)\n", selection[u]->BASEID, selection[u]->P_TOT);
+            printf("\n\n");
 
             // Boucle d'affichage et de vérification des exclusions
             printf("EXCLUSION : \n");
@@ -92,14 +116,23 @@ void ALGO(DATASET dataset){
 
                         // Si les tâches correspondent
                         if(selection[i]->E[j]->BASEID == selection[k]->BASEID){
-                            int indice = (selection[i]->E[j]->S_TOT >= selection[k]->S_TOT) ? k : i;
+                            for(int l = 0; l < dataset.TASK_TOT; l++){
+                                dataset.TASKS[l].TEMOIN = 0;
+                            }
+                            selection[i]->MARQUEUR = DFS_Exclusions(dataset, selection[i]);
+                            for(int l = 0; l < dataset.TASK_TOT; l++){
+                                dataset.TASKS[l].TEMOIN = 0;
+                            }
+                            selection[k]->MARQUEUR = DFS_Exclusions(dataset, selection[k]);
+                            printf("\tDFS : %d : SSTOT=%d     %d : SSTOT=%d\n", selection[i]->BASEID, selection[i]->MARQUEUR, selection[k]->BASEID, selection[k]->MARQUEUR);
+                            int indice = (selection[i]->MARQUEUR > selection[k]->MARQUEUR) ? k : i;
 
                             // Boucle de vérification des exclusions de la tâche
                             for(int l = 0; l < selection[indice]->S_TOT; l++){
                                 //printf("\tPARCOURS (%d) : succ. %d -> USED-%d\n", selection[indice]->BASEID, selection[indice]->S[l]->BASEID, selection[indice]->S[l]->USED);
                                 if(selection[indice]->S[l]->USED == 1){
                                     printf("BREAK : ANN. SUPPR. de %d (%d utilise)\n", selection[indice]->BASEID, selection[indice]->S[l]->BASEID);
-                                    indice = (selection[i]->E[j]->S_TOT >= selection[k]->S_TOT) ? i : k;
+                                    indice = (selection[i]->MARQUEUR > selection[k]->MARQUEUR) ? i : k;
                                     break;
                                 }
                             }
@@ -111,12 +144,14 @@ void ALGO(DATASET dataset){
                             // Suppression de la tâche qui venait d'être ajoutée
                             selection = (TASK**) realloc (selection, (nb_selection-1)*sizeof(TASK*));
                             nb_selection--;
-                            for(int u = 0; u < nb_selection; u++) printf("%d : (PTOT = %d)\n", selection[u]->BASEID, selection[u]->P_TOT);
+                            for(int u = 0; u < nb_selection; u++) printf("%d : (STOT = %d)\n", selection[u]->BASEID, selection[u]->S_TOT);
                             printf("\n");
                         }
                     }
                 }
             }
+            printf("\n");
+
             // Gestion du temps en rapport avec le temps de cycle
             printf("TEMPS : \n");
             for(int i = 0; i < nb_selection; i++){
@@ -126,13 +161,14 @@ void ALGO(DATASET dataset){
                 for(int j = 0; j < nb_selection; j++){
                     selection[j]->TEMOIN = 0;
                 }
-                // Appel de la fonction DFS pour
-                DFS(dataset, selection, nb_selection, selection[i], 0);
+                // Appel de la fonction DFS pour le temps
+                DFS_Temps(dataset, selection, nb_selection, selection[i], 0);
             }
             //for(int i = 0; i < nb_selection; i++) printf("\t%d : %d\n", selection[i]->BASEID, selection[i]->TEMPS_TOT);
             do{
                 for(int u = 0; u < nb_selection; u++) printf("%d : (MARQUEUR = %d, S_TOT =  %d)\n", selection[u]->BASEID, selection[u]->MARQUEUR, selection[u]->S_TOT);
                 stations[nb_stations].TEMPS_TOT = 0;
+                printf("\n");
 
                 // Addition des temps des actions de la liste de tâches
                 for(int i = 0; i < nb_selection; i++){
@@ -145,7 +181,8 @@ void ALGO(DATASET dataset){
                     // Boucle de recherche de l'indice de la tâche à enlever
                     for(int i = 0; i < nb_selection; i++){
                         if(selection[indice]->MARQUEUR == selection[i]->MARQUEUR) {
-                            indice = (selection[indice]->S_TOT < selection[i]->S_TOT) ? indice : i;
+                            //indice = (selection[indice]->S_TOT < selection[i]->S_TOT) ? indice : i;
+                            indice = (selection[indice]->TEMPS_EXE > selection[i]->TEMPS_EXE) ? indice : i;
                         }
                         else if(selection[indice]->MARQUEUR < selection[i]->MARQUEUR) {
                             indice = i;
@@ -173,7 +210,9 @@ void ALGO(DATASET dataset){
         stations[nb_stations].NB_SELECTIONS = nb_selection;
 
         nb_stations++;// Incrémentation du nombre de stations
+        printf("--- NOUVELLE STATION : %d\n\n\n", nb_stations);
     }
+    printf("\n");
     AFFICHE_STAT(stations,nb_stations);
 
     // Fin du sous programme principal
