@@ -93,14 +93,14 @@ void ALGO(DATASET dataset){
 
                         // Si les tâches correspondent
                         if(selection[i]->E[j]->BASEID == selection[k]->BASEID){
-                            int indice = (selection[i]->E[j]->S_TOT >= selection[k]->S_TOT) ? k : i;
+                            int indice = (selection[i]->E[j]->GB_S_TOT >= selection[k]->GB_S_TOT) ? k : i;
 
                             // Boucle de vérification des exclusions de la tâche
                             for(int l = 0; l < selection[indice]->S_TOT; l++){
                                 //printf("\tPARCOURS (%d) : succ. %d -> USED-%d\n", selection[indice]->BASEID, selection[indice]->S[l]->BASEID, selection[indice]->S[l]->USED);
                                 if(selection[indice]->S[l]->USED == 1){
                                     printf("BREAK : ANN. SUPPR. de %d (%d utilise)\n", selection[indice]->BASEID, selection[indice]->S[l]->BASEID);
-                                    indice = (selection[i]->E[j]->S_TOT >= selection[k]->S_TOT) ? i : k;
+                                    indice = (selection[i]->E[j]->GB_S_TOT >= selection[k]->GB_S_TOT) ? i : k;
                                     break;
                                 }
                             }
