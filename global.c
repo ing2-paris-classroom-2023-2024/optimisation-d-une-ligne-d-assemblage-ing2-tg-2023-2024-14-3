@@ -1,5 +1,5 @@
 #include "header_general.h"
-
+//V prez 1.0
 void DFS(DATASET dataset, TASK** selection, int nb_selection, TASK* tache, int MARQUEUR_PREC){
     /*
      *  PROCÉDURE DE PARCOURS DFS RÉCURSIF
