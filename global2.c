@@ -106,26 +106,32 @@ void ALGO2(DATASET dataset){
             for(int u = 0; u < nb_SELECTION; u++) printf("%d : (TEMPS_TOT = %d < %d)\n", SELECTION[u]->BASEID, SELECTION[u]->TEMPS_TOT, dataset.T_CYCLE);
             printf("\n");
 
-
+            // Boucle de gestion des exclusions
             printf("EXCLUSION : \n");
             for (int i = 0; i < nb_SELECTION; i++){
                 for(int j = 0; j < SELECTION[i]->E_TOT; j++){
                     for(int k = i+1; k < nb_SELECTION; k++){
                         //printf("\tTRY : POUR (%d) %d on compare (%d) %d   et   (%d) %d\n", i, SELECTION[i]->BASEID, j, SELECTION[i]->E[j]->BASEID, k, SELECTION[k]->BASEID);
+
+                        // Pour chaque éléments de la liste de tâche de la station, on regarde les exclusions des tâches qui y sont présentes
                         if(SELECTION[i]->E[j]->BASEID == SELECTION[k]->BASEID){
                             int indice = (SELECTION[i]->E[j]->S_TOT >= SELECTION[k]->S_TOT) ? k : i;
                             for(int l = 0; l < SELECTION[indice]->S_TOT; l++){
                                 //printf("\tPARCOURS (%d) : succ. %d -> USED-%d\n", SELECTION[indice]->BASEID, SELECTION[indice]->S[l]->BASEID, SELECTION[indice]->S[l]->USED);
+
+                                // Si un élément est exclu par un autre le supprimer
                                 if(SELECTION[indice]->S[l]->USED == 1){
                                     printf("BREAK : ANN. SUPPR. de %d (%d utilise)\n", SELECTION[indice]->BASEID, SELECTION[indice]->S[l]->BASEID);
                                     indice = (SELECTION[i]->E[j]->S_TOT >= SELECTION[k]->S_TOT) ? i : k;
                                     break;
                                 }
                             }
+                            // Décalage des éléments de la liste
                             SELECTION[indice]->USED = 0;
                             for(int l = indice; l < nb_SELECTION-1; l++){
                                 SELECTION[l] = SELECTION[l+1];
                             }
+                            // Suppression de l'élément rajouté
                             SELECTION = (TASK**) realloc (SELECTION, (nb_SELECTION-1)*sizeof(TASK*));
                             nb_SELECTION--;
                             for(int u = 0; u < nb_SELECTION; u++) printf("%d : (PTOT = %d)\n", SELECTION[u]->BASEID, SELECTION[u]->P_TOT);
@@ -140,6 +146,7 @@ void ALGO2(DATASET dataset){
 
             //printf("%d : VAL=%d\n", nb_stations, nb_actions);
         }
+        // Ajout des différentes informations du programme dans la station concernée
         stations[nb_stations].SELECTION = SELECTION;
         stations[nb_stations].NB_SELECTIONS = nb_SELECTION;
         for(int i = 0; i < nb_SELECTION; i++) stations[nb_stations].TEMPS_TOT = (stations[nb_stations].TEMPS_TOT < SELECTION[i]->TEMPS_TOT) ? SELECTION[i]->TEMPS_TOT : stations[nb_stations].TEMPS_TOT;
