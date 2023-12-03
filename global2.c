@@ -5,7 +5,7 @@ void DFS2(DATASET dataset, TASK** SELECTION, int nb_SELECTION, TASK* tache, int 
      *  PROCÉDURE DE PARCOURS DFS RÉCURSIF
      *  GRAPHE    : Variable contenant le graphe
      * MAILLON   : Variable du maillon dans lequel la recherche va être faite
-     */
+     * Version alternative de la procédure utilisée par le programme principal*/
 
     // Vérification de la couleur pour la suite du parcours
     if(tache->TEMOIN){return;}
