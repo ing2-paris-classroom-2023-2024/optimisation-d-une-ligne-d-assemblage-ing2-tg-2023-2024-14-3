@@ -202,7 +202,7 @@ int DFS_SUIVANTS_MAX(DATASET dataset, TASK* tache){
     int result = 0;
 
     // Affichage du chemin
-    printf("%d, ", tache->BASEID);
+    //printf("%d, ", tache->BASEID);
 
     for(int i = 0; i < tache->S_TOT; i++){
         result += DFS_SUIVANTS_MAX(dataset, tache->S[i]);
