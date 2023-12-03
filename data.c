@@ -42,8 +42,8 @@ int** FILLDATAS(char* fname, int* tot, int cond){
         tab = (int**) realloc( tab, (*tot+1)*sizeof(int*) );
         tab[*tot] = (int*) malloc( 2*sizeof(int) );
         if(cond) {
-            float temp = 0.00;
-            fscanf(fichier, "%d %f\n", &(tab[*tot][0]), &(temp));
+            double temp = 0.001;
+            fscanf(fichier, "%d %lf\n", &(tab[*tot][0]), &(temp));
             tab[*tot][1] = (int) (temp * 1000);
         }
         else{
