@@ -14,11 +14,11 @@ DATAS SCANDATAS(char* jeu_donnees){
     sprintf(temp, "../fichiers_ressources/%s/exclusions.txt", jeu_donnees);
     datas.EXCLUSIONS = FILLDATAS(temp, &(datas.EXCLUSIONS_TOT), 0);
 
-    printf("SCAN2\n");
+    //printf("SCAN2\n");
     sprintf(temp, "../fichiers_ressources/%s/precedences.txt", jeu_donnees);
     datas.PRECEDENCES = FILLDATAS(temp, &(datas.PRECEDENCES_TOT), 0);
 
-    printf("SCAN3\n");
+    //printf("SCAN3\n");
     sprintf(temp, "../fichiers_ressources/%s/operations.txt", jeu_donnees);
     datas.OPERATIONS = FILLDATAS(temp, &(datas.OPERATIONS_TOT), 1);
 
