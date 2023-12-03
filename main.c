@@ -19,6 +19,8 @@ int main() {
     ALGO(dataset);
 
     FREEDATASET(dataset);
+    //int x=(int)(0.09*1000);
+    //printf("%d\n",x);
     return 0;
 
 }
