@@ -60,7 +60,7 @@ void ALGO2(DATASET dataset){
                 if(cond && !dataset.TASKS[i].USED){
                     SELECTION = (TASK**) realloc(SELECTION, (nb_SELECTION+1)*sizeof(TASK*));
                     SELECTION[nb_SELECTION] = &(dataset.TASKS[i]);
-                    //printf("%d : (PTOT = %d)\n", dataset.TASKS[i].BASEID, dataset.TASKS[i].P_TOT);
+                    printf("%d : (PTOT = %d)\n", dataset.TASKS[i].BASEID, dataset.TASKS[i].P_TOT);
                     nb_SELECTION++;
                 }
             }
