@@ -6,10 +6,10 @@ int main() {
      * La variable jeu_donnees permet de facilement passer d'un jeu de donnée à un autre
      * */
     setbuf(stdout, 0);
-    char* jeu_donnees = "01";
+    char* jeu_donnees = "04";
     DATAS datas = SCANDATAS(jeu_donnees);
 
-    //DISPDATAS(datas);
+    DISPDATAS(datas);
 
     DATASET dataset = DATASORT(datas);
     DISPDATASET(dataset);
