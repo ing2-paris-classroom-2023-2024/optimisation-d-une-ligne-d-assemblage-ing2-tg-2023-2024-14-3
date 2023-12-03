@@ -18,7 +18,7 @@ int main() {
     //ALGO2(dataset);
     ALGO(dataset);
 
-    FREEDATASET(dataset);
+    //FREEDATASET(dataset);
     return 0;
 
 }
