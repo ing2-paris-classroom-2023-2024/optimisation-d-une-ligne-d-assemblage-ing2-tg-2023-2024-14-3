@@ -49,7 +49,7 @@ int** FILLDATAS(char* fname, int* tot, int cond){
         else{
             fscanf(fichier, "%d %d\n", &(tab[*tot][0]), &(tab[*tot][1]));
         }
-        printf("VAL :\t%d\t%d\n", tab[*tot][0], tab[*tot][1]);
+        //printf("VAL :\t%d\t%d\n", tab[*tot][0], tab[*tot][1]);
         (*tot)++;
     }
     fclose(fichier);
