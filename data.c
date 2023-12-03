@@ -14,11 +14,11 @@ DATAS SCANDATAS(char* jeu_donnees){
     sprintf(temp, "../fichiers_ressources/%s/exclusions.txt", jeu_donnees);
     datas.EXCLUSIONS = FILLDATAS(temp, &(datas.EXCLUSIONS_TOT), 0);
 
-    //printf("SCAN2\n");
+    printf("SCAN2\n");
     sprintf(temp, "../fichiers_ressources/%s/precedences.txt", jeu_donnees);
     datas.PRECEDENCES = FILLDATAS(temp, &(datas.PRECEDENCES_TOT), 0);
 
-    //printf("SCAN3\n");
+    printf("SCAN3\n");
     sprintf(temp, "../fichiers_ressources/%s/operations.txt", jeu_donnees);
     datas.OPERATIONS = FILLDATAS(temp, &(datas.OPERATIONS_TOT), 1);
 
@@ -42,8 +42,8 @@ int** FILLDATAS(char* fname, int* tot, int cond){
         tab = (int**) realloc( tab, (*tot+1)*sizeof(int*) );
         tab[*tot] = (int*) malloc( 2*sizeof(int) );
         if(cond) {
-            double temp = 0.001;
-            fscanf(fichier, "%d %lf\n", &(tab[*tot][0]), &(temp));
+            float temp = 0.01;
+            fscanf(fichier, "%d %f\n", &(tab[*tot][0]), &(temp));
             tab[*tot][1] = (int) (temp * 1000);
         }
         else{
@@ -130,7 +130,7 @@ DATASET DATASORT(DATAS datas){
         LIGNE[1]->P = (TASK**) realloc(LIGNE[1]->P, (LIGNE[1]->P_TOT+1)*sizeof(TASK*));
         LIGNE[1]->P[LIGNE[1]->P_TOT] = LIGNE[0];
         LIGNE[1]->P_TOT++;
-        printf("TACHE %d :\tAntecedent -> %d \t(PTOT %d)\n", LIGNE[1]->BASEID, LIGNE[1]->P[LIGNE[1]->P_TOT-1]->BASEID, LIGNE[1]->P_TOT);
+        //printf("TACHE %d :\tAntecedent -> %d \t(PTOT %d)\n", LIGNE[1]->BASEID, LIGNE[1]->P[LIGNE[1]->P_TOT-1]->BASEID, LIGNE[1]->P_TOT);
     }
 
     // Ajout des successeurs
@@ -178,9 +178,37 @@ DATASET DATASORT(DATAS datas){
         //printf("TACHE %d :\tExclut -> %d \t(ETOT %d)\n", LIGNE[1]->BASEID, LIGNE[1]->E[LIGNE[1]->E_TOT-1]->BASEID, LIGNE[1]->E_TOT);
     }
 
+    for(int i = 0; i < dataset.TASK_TOT; i++){
+        for(int j = 0; j < dataset.TASK_TOT; j++) dataset.TASKS[j].TEMOIN = 0;
+        dataset.TASKS[i].GB_S_TOT = DFS_SUIVANTS_MAX(dataset, &(dataset.TASKS[i]));
+    }
+
     FREEDATAS(datas);
 
     return dataset;
+}
+
+int DFS_SUIVANTS_MAX(DATASET dataset, TASK* tache){
+    /*
+     *  PROCÉDURE DE PARCOURS DFS RÉCURSIF
+     *  GRAPHE    : Variable contenant le graphe
+     *  MAILLON   : Variable du maillon dans lequel la recherche va être faite
+     */
+
+    // Vérification de la couleur pour la suite du parcours
+    if(tache->TEMOIN){return 0;}
+    tache->TEMOIN = 1;
+
+    int result = 0;
+
+    // Affichage du chemin
+    //printf("%d, ", tache->BASEID);
+
+    for(int i = 0; i < tache->S_TOT; i++){
+        result += DFS_SUIVANTS_MAX(dataset, tache->S[i]);
+    }
+    tache->TEMOIN = 2;
+    return result + 1;
 }
 
 void DISPDATASET(DATASET dataset){
@@ -188,6 +216,7 @@ void DISPDATASET(DATASET dataset){
     for(int i = 0; i < dataset.TASK_TOT; i++){
         printf("\tTache n %d :\n", dataset.TASKS[i].BASEID);
         printf("\tTemps exe : %d ms.\n",dataset.TASKS[i].TEMPS_EXE);
+        printf("\tSuccesseur Global : %d.\n",dataset.TASKS[i].GB_S_TOT);
         printf("\t\tPrecedents (PTOT : %d) : ", dataset.TASKS[i].P_TOT);
         for(int j = 0; j < dataset.TASKS[i].P_TOT; j++){
             printf("%d, ", dataset.TASKS[i].P[j]->BASEID);
