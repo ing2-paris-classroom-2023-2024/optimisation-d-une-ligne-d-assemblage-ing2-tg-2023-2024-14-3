@@ -30,7 +30,14 @@ void DFS2(DATASET dataset, TASK** SELECTION, int nb_SELECTION, TASK* tache, int 
 }
 
 void ALGO2(DATASET dataset){
+    /*
+    * Procédure principale de ce projet
+    * Gère et affiche les stations et les tâches associées
+    * DATASET dataset : Structure du jeu de données triées et organisées
+    * version alternative du sous-programme principal du projet
+    */
 
+    // Création du tableau de STATIONS et initialisation des paramètres
     int nb_stations = 0;
     STATION* stations = (STATION*) malloc(nb_stations*sizeof(STATION));
     stations->TEMPS_TOT = 0;
