@@ -64,6 +64,7 @@ void ALGO2(DATASET dataset){
                         break;
                     }
                 }
+                // Si une tâche a été choisie, on l'ajoute au tableau de la station
                 if(cond && !dataset.TASKS[i].USED){
                     SELECTION = (TASK**) realloc(SELECTION, (nb_SELECTION+1)*sizeof(TASK*));
                     SELECTION[nb_SELECTION] = &(dataset.TASKS[i]);
@@ -71,6 +72,7 @@ void ALGO2(DATASET dataset){
                     nb_SELECTION++;
                 }
             }
+            // Boucle de désactivation du choix des tâches présentes dans la station
             for(int i = 0; i < nb_SELECTION; i++){
                 SELECTION[i]->USED = 1;
             }
