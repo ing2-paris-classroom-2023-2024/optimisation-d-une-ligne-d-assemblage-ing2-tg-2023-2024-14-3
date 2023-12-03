@@ -183,7 +183,7 @@ DATASET DATASORT(DATAS datas){
         dataset.TASKS[i].GB_S_TOT = DFS_SUIVANTS_MAX(dataset, &(dataset.TASKS[i]));
     }
 
-    FREEDATAS(datas);
+    //FREEDATAS(datas);
 
     return dataset;
 }
