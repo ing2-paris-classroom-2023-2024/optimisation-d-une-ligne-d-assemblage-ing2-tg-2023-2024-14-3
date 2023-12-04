@@ -186,6 +186,7 @@ void ALGO(DATASET dataset){
     setbuf(stdout, 0);
     printf("NB. STATIONS : %d\n", nb_stations);
     //scanf("%d", &std);
+
 }
 
 bool FINTRAITEMENT(DATASET dataset){
