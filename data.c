@@ -130,7 +130,7 @@ DATASET DATASORT(DATAS datas){
         LIGNE[1]->P = (TASK**) realloc(LIGNE[1]->P, (LIGNE[1]->P_TOT+1)*sizeof(TASK*));
         LIGNE[1]->P[LIGNE[1]->P_TOT] = LIGNE[0];
         LIGNE[1]->P_TOT++;
-        printf("TACHE %d :\tAntecedent -> %d \t(PTOT %d)\n", LIGNE[1]->BASEID, LIGNE[1]->P[LIGNE[1]->P_TOT-1]->BASEID, LIGNE[1]->P_TOT);
+        //printf("TACHE %d :\tAntecedent -> %d \t(PTOT %d)\n", LIGNE[1]->BASEID, LIGNE[1]->P[LIGNE[1]->P_TOT-1]->BASEID, LIGNE[1]->P_TOT);
     }
 
     // Ajout des successeurs
