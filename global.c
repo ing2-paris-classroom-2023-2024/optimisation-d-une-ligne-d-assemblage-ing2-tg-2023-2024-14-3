@@ -11,7 +11,6 @@ void DFS(DATASET dataset, TASK** selection, int nb_selection, TASK* tache, int M
     if(tache->TEMOIN){return;}
     tache->TEMOIN = 1;
 
-
     // Affichage du chemin
     //printf("%d, ", tache->BASEID);
 
