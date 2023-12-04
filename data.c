@@ -81,6 +81,7 @@ void FREEDATAS(DATAS datas){
     free(datas.EXCLUSIONS);
     for(int i = 0; i < datas.OPERATIONS_TOT; i++) free(datas.OPERATIONS[i]);
     free(datas.OPERATIONS);
+
 }
 
 
