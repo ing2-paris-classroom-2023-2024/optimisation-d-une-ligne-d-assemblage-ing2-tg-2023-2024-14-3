@@ -206,4 +206,3 @@ void AFFICHE_STAT(STATION* inst,int nb_stat){
         printf("\n");
     }
 }
-
