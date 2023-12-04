@@ -194,7 +194,6 @@ bool FINTRAITEMENT(DATASET dataset){
     return true;
 }
 
-
 void AFFICHE_STAT(STATION* inst,int nb_stat){
     for(int i = 0; i < nb_stat; i++){
         printf("STATION %d (Nombre d'actions a executer : %d  |  Temps total : %d ms) :\n", i+1,
